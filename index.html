@@ -8,333 +8,334 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&family=Barlow+Semi+Condensed:wght@500;600&display=swap">
 <style>
-/* Layout: 每天是一塊「站名標」+ 路線圖式時間軸；城市用顏色區分（京都紫、海之京都藍綠、奈良苔綠、大阪柿橙） */
+/*
+  Layout: 單欄 640px，靠左對齊。封面是一張日本「乘車券」，每天的標題是 JR 西日本式站名標，
+  時間軸的交通段用該路線真實的代表色（JR 藍、阪急栗色、京阪綠、近鐵紅、南海橘、御堂筋紅）。
+  大膽只放在乘車券和路線色；其他地方用細線分隔，不做卡片。
+*/
 :root {
-  --paper: #EEF0F4;
+  --paper: #F3F5F4;
   --surface: #FFFFFF;
-  --ink: #1A2036;
-  --muted: #5D6680;
-  --line: #D6DBE6;
-  --soft: #F5F6F9;
-  --kyoto: #5B4A8B;
+  --ink: #1E2327;
+  --muted: #5D666C;
+  --line: #D6DCDA;
+  --ticket: #D9EAE3;
+  --ticket-ink: #23413A;
+  --ticket-dot: #BFD9CF;
+  --kyoto: #6A4C93;
   --sea: #17788A;
-  --nara: #4D7536;
-  --osaka: #C2531B;
-  --booked: #237452;
-  --booked-soft: #E1F2EA;
-  --flex: #87661A;
-  --flex-soft: #F6EDD6;
-  --warn: #B23A2E;
-  --warn-soft: #FBE6E2;
-  --font-display: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
+  --nara: #557A2A;
+  --osaka: #C4511A;
+  --jr: #0072BC;
+  --hankyu: #6B1F2A;
+  --keihan: #00843D;
+  --kintetsu: #D7003A;
+  --nankai: #E48A00;
+  --metro: #E5171F;
+  --bus: #4A7360;
+  --booked: #1F6E4B;
+  --booked-soft: #DFF0E6;
+  --flex: #80611A;
+  --flex-soft: #F3EAD3;
+  --warn: #B0352A;
+  --warn-soft: #FBE5E1;
+  --font-display: "LXGW WenKai TC", "Kaiti TC", "DFKai-SB", "BiauKai", serif;
   --font-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "Consolas", monospace;
+  --font-num: "Barlow Semi Condensed", "Arial Narrow", "Noto Sans TC", sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #0E111B; --surface: #171C2B; --ink: #E7EAF2; --muted: #9AA3BA; --line: #2A3246; --soft: #1D2335;
-    --kyoto: #B3A2E6; --sea: #5CC6D6; --nara: #9DCB7E; --osaka: #F0915C;
-    --booked: #6FCB9F; --booked-soft: #173327; --flex: #DDBB61; --flex-soft: #352C14; --warn: #F08A7C; --warn-soft: #3A1E1B;
+    --paper: #121716; --surface: #1A2120; --ink: #E5EAE8; --muted: #9AA5A2; --line: #2C3633;
+    --ticket: #1E302B; --ticket-ink: #CFE6DD; --ticket-dot: #26403A;
+    --kyoto: #B6A0E0; --sea: #5CC3D3; --nara: #A3CB72; --osaka: #F09060;
+    --jr: #4AA8E8; --hankyu: #C9707E; --keihan: #3DBB72; --kintetsu: #FF5C7E; --nankai: #F5AE3D; --metro: #FF5A5F; --bus: #7FB39A;
+    --booked: #6FCB9F; --booked-soft: #173327; --flex: #DDBB61; --flex-soft: #33291A; --warn: #F08A7C; --warn-soft: #3A1E1B;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --paper: #0E111B; --surface: #171C2B; --ink: #E7EAF2; --muted: #9AA3BA; --line: #2A3246; --soft: #1D2335;
-  --kyoto: #B3A2E6; --sea: #5CC6D6; --nara: #9DCB7E; --osaka: #F0915C;
-  --booked: #6FCB9F; --booked-soft: #173327; --flex: #DDBB61; --flex-soft: #352C14; --warn: #F08A7C; --warn-soft: #3A1E1B;
+  --paper: #121716; --surface: #1A2120; --ink: #E5EAE8; --muted: #9AA5A2; --line: #2C3633;
+  --ticket: #1E302B; --ticket-ink: #CFE6DD; --ticket-dot: #26403A;
+  --kyoto: #B6A0E0; --sea: #5CC3D3; --nara: #A3CB72; --osaka: #F09060;
+  --jr: #4AA8E8; --hankyu: #C9707E; --keihan: #3DBB72; --kintetsu: #FF5C7E; --nankai: #F5AE3D; --metro: #FF5A5F; --bus: #7FB39A;
+  --booked: #6FCB9F; --booked-soft: #173327; --flex: #DDBB61; --flex-soft: #33291A; --warn: #F08A7C; --warn-soft: #3A1E1B;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
 body {
   background: var(--paper); color: var(--ink);
-  font-family: var(--font-body); font-size: 15px; line-height: 1.7;
+  font-family: var(--font-body); font-size: 15px; line-height: 1.75;
+  -webkit-text-size-adjust: 100%;
 }
 a { color: inherit; }
-a:focus-visible, input:focus-visible { outline: 2px solid var(--osaka); outline-offset: 2px; border-radius: 4px; }
+a:focus-visible, input:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-radius: 2px; }
 .wrap {
-  max-width: 720px; margin: 0 auto;
+  max-width: 640px; margin: 0 auto;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
-.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.mono { font-family: var(--font-num); font-variant-numeric: tabular-nums; font-weight: 500; }
 .kyoto { --day: var(--kyoto); }
 .sea { --day: var(--sea); }
 .nara { --day: var(--nara); }
 .osaka { --day: var(--osaka); }
 
-/* ---------- 封面 ---------- */
-header.hero { padding-block: 36px 24px; }
-.hero .dates { font-family: var(--font-mono); font-size: 13px; letter-spacing: .1em; color: var(--muted); }
-.hero h1 {
-  font-family: var(--font-display); font-weight: 900;
-  font-size: clamp(40px, 11vw, 64px); line-height: 1.05; margin: 8px 0 10px; letter-spacing: .02em;
+/* ---------- 乘車券 ---------- */
+header.hero { padding-block: 28px 22px; }
+.ticket {
+  position: relative; color: var(--ticket-ink);
+  background-color: var(--ticket);
+  background-image: radial-gradient(var(--ticket-dot) 1px, transparent 1.3px);
+  background-size: 7px 7px;
+  border-radius: 6px; padding: 18px 20px 16px;
 }
-.hero h1 span { color: var(--osaka); }
-.hero p { margin: 0; color: var(--muted); max-width: 34em; }
-
-/* 路線圖 */
-.route { margin-top: 24px; overflow-x: auto; padding-bottom: 4px; }
-.route ol { list-style: none; margin: 0; padding: 0; display: flex; min-width: 520px; }
-.route li { flex: 1 1 0; position: relative; text-align: center; padding-top: 22px; }
-.route li::before {
-  content: ""; position: absolute; top: 8px; left: 0; right: 0; height: 4px; background: var(--day, var(--muted));
+/* 剪票口的缺角 */
+.ticket::before, .ticket::after {
+  content: ""; position: absolute; top: 50%; width: 16px; height: 16px; margin-top: -8px;
+  background: var(--paper); border-radius: 50%;
 }
-.route li:first-child::before { left: 50%; }
-.route li:last-child::before { right: 50%; }
-.route li::after {
-  content: ""; position: absolute; top: 2px; left: 50%; transform: translateX(-50%);
-  width: 16px; height: 16px; border-radius: 50%; background: var(--surface); border: 4px solid var(--day, var(--muted));
+.ticket::before { left: -8px; }
+.ticket::after { right: -8px; }
+.ticket .kind { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; }
+.ticket .kind b { font-family: var(--font-display); font-size: 17px; font-weight: 700; letter-spacing: .3em; }
+.ticket h1 {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(44px, 13vw, 68px); line-height: 1.05; margin: 10px 0 12px; letter-spacing: .04em;
 }
-.route b { display: block; font-size: 15px; }
-.route small { display: block; font-size: 12px; color: var(--muted); line-height: 1.4; }
-
-.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 18px; font-size: 13px; color: var(--muted); align-items: center; }
-.legend > span { display: inline-flex; gap: 6px; align-items: center; }
+.ticket .via { font-size: 15px; line-height: 1.6; margin: 0; }
+.ticket .via span { white-space: nowrap; }
+.ticket .via i { font-style: normal; font-size: 10px; margin: 0 5px; vertical-align: 2px; }
+.ticket .valid {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 16px;
+  margin: 12px 0 0; padding-top: 10px; border-top: 1px dashed currentColor; font-size: 13px;
+}
+.ticket .valid b { font-family: var(--font-num); font-weight: 600; font-size: 15px; }
+.countdown { margin: 8px 0 0; font-size: 14px; color: var(--ticket-ink); }
+.countdown b { font-family: var(--font-num); font-weight: 600; font-size: 26px; margin: 0 3px; line-height: 1; }
+.lede { margin: 16px 0 0; color: var(--muted); font-size: 14px; }
+.lede .tag { margin-right: 4px; }
 
 /* ---------- 日期列 ---------- */
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
 nav.days {
   position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
-  background: color-mix(in srgb, var(--paper) 92%, transparent);
-  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--line);
+  background: var(--paper); border-bottom: 1px solid var(--line);
 }
-nav.days .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: none; }
+nav.days .wrap { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
 nav.days .wrap::-webkit-scrollbar { display: none; }
 nav.days a {
-  flex: 0 0 auto; text-decoration: none;
-  display: inline-flex; align-items: center; gap: 6px;
-  border: 1px solid var(--line); background: var(--surface);
-  border-radius: 999px; padding: 3px 12px 3px 10px; font-size: 13px; white-space: nowrap;
+  flex: 0 0 auto; text-decoration: none; white-space: nowrap;
+  display: flex; flex-direction: column; align-items: flex-start; line-height: 1.25;
+  padding: 9px 10px 8px; font-size: 13px; color: var(--muted);
+  border-bottom: 3px solid transparent; margin-bottom: -1px;
 }
-nav.days a i { width: 8px; height: 8px; border-radius: 50%; background: var(--day, var(--muted)); }
-nav.days a b { font-family: var(--font-mono); font-weight: 600; }
-nav.days a.today { border-color: var(--day, var(--ink)); box-shadow: 0 0 0 1px var(--day, var(--ink)) inset; }
-nav.days a[aria-current="page"] { background: var(--day, var(--ink)); border-color: var(--day, var(--ink)); color: var(--surface); }
-nav.days a[aria-current="page"] i { background: var(--surface); }
-
-/* 分頁底部的上一頁、下一頁 */
-.pager { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
-.pager a {
-  display: flex; flex-direction: column; gap: 2px; text-decoration: none; min-width: 0;
-  background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px;
-}
-.pager a.next { text-align: right; grid-column: 2; }
-.pager small { font-size: 12px; color: var(--muted); }
-.pager b { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.pager a:hover { border-color: var(--muted); }
+nav.days a i { display: none; }
+nav.days a b { font-family: var(--font-num); font-weight: 600; font-size: 12px; color: var(--day, var(--muted)); }
+nav.days a[aria-current="page"] { color: var(--ink); font-weight: 700; border-bottom-color: var(--day, var(--ink)); }
+nav.days a.today b::after { content: "今天"; font-family: var(--font-body); font-weight: 700; margin-left: 4px; }
 
 main { padding-block: 20px 40px; }
 section { scroll-margin-top: 60px; }
-.sec-title { font-family: var(--font-display); font-weight: 900; font-size: 24px; margin: 0 0 14px; }
+.sec-title { font-family: var(--font-display); font-weight: 700; font-size: 26px; margin: 0 0 14px; }
 
 /* ---------- 標籤 ---------- */
-.tag { display: inline-block; font-size: 12px; line-height: 1; padding: 4px 7px; border-radius: 4px; font-weight: 500; white-space: nowrap; vertical-align: 2px; }
+.tag { display: inline-block; font-size: 12px; line-height: 1; padding: 4px 6px; border-radius: 3px; font-weight: 500; white-space: nowrap; vertical-align: 2px; }
 .tag.booked { background: var(--booked-soft); color: var(--booked); }
 .tag.flex { background: var(--flex-soft); color: var(--flex); }
+
+/* 路線符號：用該路線的代表色 */
 .mode {
-  display: inline-block; font-size: 11px; line-height: 1; padding: 3px 6px; border-radius: 3px;
-  border: 1px solid var(--day); color: var(--day); font-weight: 700; margin-right: 6px; vertical-align: 1px; white-space: nowrap;
+  display: inline-block; font-size: 11px; line-height: 1; padding: 4px 6px; border-radius: 3px;
+  background: var(--lc, var(--muted)); color: #fff; font-weight: 700; margin-right: 6px; vertical-align: 1px; white-space: nowrap;
 }
+li.mv:has(.mode.jr), .mode.jr { --lc: var(--jr); }
+li.mv:has(.mode.hankyu), .mode.hankyu { --lc: var(--hankyu); }
+li.mv:has(.mode.keihan), .mode.keihan { --lc: var(--keihan); }
+li.mv:has(.mode.kintetsu), .mode.kintetsu { --lc: var(--kintetsu); }
+li.mv:has(.mode.nankai), .mode.nankai { --lc: var(--nankai); }
+li.mv:has(.mode.metro), .mode.metro { --lc: var(--metro); }
+li.mv:has(.mode.bus), .mode.bus { --lc: var(--bus); }
+:root:not([data-theme="light"]) .mode { color: #fff; }
 
 /* ---------- 登機證 ---------- */
-.passes { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+.passes { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 12px; }
 .pass {
-  background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 6px;
   display: grid; grid-template-columns: 1fr auto; min-width: 0; overflow: hidden;
 }
 .pass .main { padding: 14px 16px; min-width: 0; }
-.pass .stub {
-  padding: 14px 16px; border-left: 2px dashed var(--line); text-align: center;
-  display: flex; flex-direction: column; justify-content: center; gap: 2px; background: var(--soft);
-}
+.pass .stub { padding: 14px 16px; border-left: 1px dashed var(--line); display: flex; flex-direction: column; justify-content: center; gap: 2px; }
 .pass .lbl { font-size: 12px; color: var(--muted); }
-.pass .legs { display: flex; align-items: center; gap: 10px; margin: 4px 0 2px; }
-.pass .iata { font-family: var(--font-mono); font-weight: 600; font-size: 26px; line-height: 1; }
-.pass .arrow { flex: 1; height: 2px; background: var(--line); position: relative; min-width: 24px; }
-.pass .arrow::after { content: ""; position: absolute; right: -1px; top: -4px; border: 5px solid transparent; border-left-color: var(--muted); border-right: 0; }
-.pass .times { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 14px; color: var(--muted); }
-.pass .no { font-family: var(--font-mono); font-weight: 600; font-size: 16px; }
+.pass .legs { display: flex; align-items: center; gap: 10px; margin: 2px 0; }
+.pass .iata { font-family: var(--font-num); font-weight: 600; font-size: 30px; line-height: 1.1; }
+.pass .arrow { flex: 1; height: 1px; background: var(--line); min-width: 24px; }
+.pass .times { display: flex; justify-content: space-between; font-family: var(--font-num); font-size: 16px; font-weight: 500; }
+.pass .no { font-family: var(--font-num); font-weight: 600; font-size: 18px; }
 
 /* ---------- 住宿 ---------- */
-.stays { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin-top: 12px; }
-.stay {
-  background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; min-width: 0;
-  border-top: 4px solid var(--day);
-}
-.stay .lbl { font-size: 12px; color: var(--day); font-weight: 700; letter-spacing: .04em; }
-.stay h3 { margin: 2px 0 4px; font-size: 16px; }
+.stays { margin-top: 20px; border-top: 1px solid var(--line); }
+.stay { padding: 14px 0; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 4px 1fr; column-gap: 14px; }
+.stay::before { content: ""; grid-row: 1 / span 6; background: var(--day); border-radius: 2px; }
+.stay .lbl { font-size: 13px; color: var(--day); font-weight: 700; }
+.stay h3 { margin: 0; font-size: 17px; }
 .stay p { margin: 0; font-size: 14px; color: var(--muted); }
 .fine { font-size: 13px; color: var(--muted); margin: 10px 0 0; }
 
-.maplink {
-  display: inline-flex; align-items: center; gap: 4px; margin-top: 6px;
-  font-size: 12px; text-decoration: none; color: var(--day, var(--muted));
-  border: 1px solid currentColor; border-radius: 999px; padding: 1px 9px; line-height: 1.6;
-}
-.maplink::after { content: "↗"; font-size: 11px; }
+.maplink { display: inline-block; margin-top: 4px; font-size: 13px; color: var(--day, var(--ink)); text-underline-offset: 3px; }
 
-/* ---------- 每日卡片 ---------- */
-.day { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+/* ---------- 每日 ---------- */
+.day { background: var(--surface); border-block: 1px solid var(--line); margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); }
+@media (min-width: 672px) { .day { margin-inline: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; } }
 
 /* 站名標 */
-.sign { padding: 18px 18px 0; text-align: center; }
-.sign .top { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; color: var(--muted); }
-.sign .top .num { font-family: var(--font-mono); font-weight: 600; color: var(--day); font-size: 14px; }
-.sign h2 { font-family: var(--font-display); font-weight: 900; font-size: clamp(26px, 7vw, 34px); line-height: 1.2; margin: 6px 0 0; text-wrap: balance; }
-.sign .roma { font-family: var(--font-mono); font-size: 12px; letter-spacing: .14em; color: var(--muted); margin-top: 2px; }
+.sign { padding: 20px 16px 0; text-align: center; }
+.sign .kana { font-size: 13px; letter-spacing: .25em; color: var(--muted); }
+.sign h2 { font-family: var(--font-display); font-weight: 700; font-size: clamp(30px, 8.5vw, 40px); line-height: 1.2; margin: 2px 0 14px; text-wrap: balance; }
 .sign .bar {
-  margin: 14px -18px 0; background: var(--day); color: var(--surface);
-  display: flex; justify-content: space-between; gap: 8px; padding: 6px 14px; font-size: 13px; font-weight: 500;
+  background: var(--day); color: var(--surface);
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px;
+  padding: 7px 12px; font-size: 13px; font-weight: 500; margin-inline: -16px;
 }
-.sign .bar a { text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sign .bar a { text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 .sign .bar a:hover { text-decoration: underline; }
-.stayline { padding: 10px 18px; font-size: 13px; color: var(--muted); border-bottom: 1px solid var(--line); background: var(--soft); }
+.sign .bar .prev { text-align: left; }
+.sign .bar .next { text-align: right; }
+.sign .bar .prev::before { content: "◀ "; font-size: 10px; }
+.sign .bar .next::after { content: " ▶"; font-size: 10px; }
+.sign .bar .here { font-weight: 700; white-space: nowrap; }
+.stayline { padding: 10px 16px; font-size: 13px; color: var(--muted); border-bottom: 1px solid var(--line); }
 .stayline b { color: var(--ink); font-weight: 500; }
 
-/* 路線圖式時間軸 */
-ol.tl { list-style: none; margin: 0; padding: 16px 18px 6px 10px; }
+/* 時間軸：活動是站點，交通是路線 */
+ol.tl { list-style: none; margin: 0; padding: 18px 16px 4px 6px; }
 ol.tl li { display: grid; grid-template-columns: 50px 18px minmax(0, 1fr); column-gap: 10px; }
 ol.tl time {
-  font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 600;
-  font-size: 14px; text-align: right; padding-top: 1px; line-height: 1.5;
+  font-family: var(--font-num); font-variant-numeric: tabular-nums; font-weight: 600;
+  font-size: 17px; text-align: right; line-height: 1.4;
 }
 ol.tl .rail { position: relative; }
 ol.tl .rail::before {
-  content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; transform: translateX(-50%); background: var(--day);
+  content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; transform: translateX(-50%); background: var(--line);
 }
 ol.tl li:first-child .rail::before { top: 10px; }
 ol.tl li:last-child .rail::before { bottom: auto; height: 10px; }
 ol.tl .rail::after {
-  content: ""; position: absolute; left: 50%; top: 4px; transform: translateX(-50%);
-  width: 16px; height: 16px; border-radius: 50%; background: var(--surface); border: 4px solid var(--day);
+  content: ""; position: absolute; left: 50%; top: 5px; transform: translateX(-50%);
+  width: 14px; height: 14px; border-radius: 50%; background: var(--surface); border: 3px solid var(--day);
 }
 ol.tl li.fixed .rail::after { background: var(--day); }
-ol.tl .body { padding-bottom: 18px; min-width: 0; }
+ol.tl .body { padding-bottom: 20px; min-width: 0; }
 ol.tl h4 { margin: 0; font-size: 16px; font-weight: 700; line-height: 1.5; }
 ol.tl p { margin: 2px 0 0; font-size: 14px; color: var(--muted); }
 ol.tl p b { color: var(--ink); }
 
-ol.tl li.mv time { font-size: 12px; font-weight: 500; color: var(--muted); }
-ol.tl li.mv .rail::before {
-  background: repeating-linear-gradient(to bottom, var(--day) 0 5px, transparent 5px 9px);
-}
+ol.tl li.mv time { font-size: 13px; font-weight: 500; color: var(--muted); }
+ol.tl li.mv .rail::before { width: 6px; border-radius: 3px; background: var(--lc, var(--line)); }
 ol.tl li.mv .rail::after { display: none; }
-ol.tl li.mv .body { padding-bottom: 14px; }
+ol.tl li.mv .body { padding-bottom: 16px; }
 ol.tl li.mv p { margin: 0; font-size: 13px; }
 
-.notes { padding: 0 18px 18px; display: grid; gap: 8px; }
-.note { font-size: 14px; padding: 10px 12px; border-radius: 8px; background: var(--flex-soft); }
+.notes { padding: 0 16px 16px; display: grid; gap: 8px; }
+.note { font-size: 14px; padding: 10px 12px; border-radius: 4px; background: var(--flex-soft); }
 .note.warn { background: var(--warn-soft); }
 .note b { font-weight: 700; }
 .note.warn b { color: var(--warn); }
 .note:not(.warn) b { color: var(--flex); }
 
+/* ---------- 餐廳 ---------- */
+.food { padding: 6px 16px 18px; }
+.food h3 { font-family: var(--font-display); font-size: 20px; font-weight: 700; margin: 0 0 4px; }
+.food ul { list-style: none; margin: 0; padding: 0; }
+.food li { padding: 10px 0; border-top: 1px solid var(--line); min-width: 0; }
+.food .n { display: flex; flex-wrap: wrap; gap: 0 8px; align-items: baseline; }
+.food .n b { font-size: 15px; }
+.food .n .when { font-size: 12px; font-weight: 700; color: var(--day); }
+.food .n .what { font-size: 13px; color: var(--muted); }
+.food p { margin: 1px 0 0; font-size: 13px; color: var(--muted); }
+.food p.hrs { color: var(--ink); }
+.food p.alert { color: var(--warn); }
+.food .fine { margin-top: 6px; font-size: 12px; }
+
+/* ---------- 上一頁、下一頁 ---------- */
+.pager { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0 0; padding: 0 16px 18px; }
+section:not(.day) .pager { padding: 0; }
+.pager a {
+  display: flex; flex-direction: column; gap: 0; text-decoration: none; min-width: 0;
+  border: 1px solid var(--line); border-radius: 4px; padding: 9px 12px; background: var(--surface);
+}
+.pager a.next { text-align: right; grid-column: 2; }
+.pager small { font-size: 12px; color: var(--muted); }
+.pager b { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
 /* ---------- 行前資訊 ---------- */
-.info { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
-.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; min-width: 0; }
-.card h3 { margin: 0 0 8px; font-size: 16px; }
+.info { display: grid; gap: 0; border-top: 1px solid var(--line); }
+.card { padding: 16px 0; border-bottom: 1px solid var(--line); min-width: 0; }
+.card h3 { font-family: var(--font-display); margin: 0 0 6px; font-size: 20px; font-weight: 700; }
 .card p { margin: 0; font-size: 14px; }
 ul.list { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 14px; }
-ul.check { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; font-size: 14px; }
+ul.check { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; font-size: 14px; }
 ul.check li { display: flex; gap: 10px; align-items: flex-start; }
-ul.check input { margin-top: 4px; accent-color: var(--booked); width: 17px; height: 17px; flex: 0 0 auto; }
+ul.check input { margin-top: 4px; accent-color: var(--booked); width: 18px; height: 18px; flex: 0 0 auto; }
 ul.check input:checked + label { color: var(--muted); text-decoration: line-through; }
 
 footer { color: var(--muted); font-size: 12px; padding-block: 0 40px; }
 
-@media (max-width: 480px) {
-  ol.tl { padding: 14px 14px 4px 4px; }
-  ol.tl li { grid-template-columns: 46px 16px minmax(0, 1fr); column-gap: 8px; }
-  .sign { padding: 16px 14px 0; }
-  .sign .bar { margin: 14px -14px 0; }
-  .stayline, .notes { padding-left: 14px; padding-right: 14px; }
-  .pass .stub { padding: 12px; }
-  .pass .iata { font-size: 22px; }
-}
-/* ---------- 餐廳口袋名單 ---------- */
-.food { padding: 4px 18px 18px; }
-.food h3 { font-size: 13px; color: var(--day); margin: 0 0 8px; letter-spacing: .06em; }
-.food ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-.food li { background: var(--soft); border-radius: 8px; padding: 10px 12px; min-width: 0; }
-.food .n { display: flex; flex-wrap: wrap; gap: 2px 8px; align-items: baseline; }
-.food .n b { font-size: 15px; }
-.food .n .when { font-size: 12px; font-weight: 700; color: var(--day); }
-.food .n .what { font-size: 13px; color: var(--muted); }
-.food p { margin: 2px 0 0; font-size: 13px; color: var(--muted); }
-.food p.hrs { color: var(--ink); }
-.food p.alert { color: var(--warn); }
-.food .fine { margin-top: 8px; font-size: 12px; }
-
 /* ---------- 現在、下一站 ---------- */
 .live {
-  margin: 14px 18px 0; padding: 10px 12px; border-radius: 10px;
-  border: 2px solid var(--day, var(--ink)); background: var(--soft);
+  margin: 14px 16px 0; padding: 10px 12px; border-radius: 4px;
+  border-left: 4px solid var(--day, var(--ink)); background: var(--paper);
   display: grid; gap: 4px; font-size: 14px;
 }
-.live .row { display: flex; gap: 8px; align-items: baseline; min-width: 0; }
+.live .row { display: flex; gap: 10px; align-items: baseline; min-width: 0; }
 .live .k { flex: 0 0 auto; font-size: 12px; font-weight: 700; color: var(--day, var(--ink)); min-width: 3.2em; }
 .live .v { min-width: 0; }
-.live .cd { font-family: var(--font-mono); font-weight: 600; color: var(--day, var(--ink)); white-space: nowrap; }
-.countdown { margin-top: 12px; font-size: 14px; color: var(--muted); }
-.countdown b { font-family: var(--font-mono); font-size: 22px; color: var(--osaka); margin: 0 2px; }
-ol.tl li.past > time, ol.tl li.past > .body { opacity: .5; }
+.live .cd { font-family: var(--font-num); font-weight: 600; font-size: 15px; color: var(--day, var(--ink)); white-space: nowrap; }
+ol.tl li.past > time, ol.tl li.past > .body { opacity: .45; }
 ol.tl li.now .rail::after { background: var(--day); box-shadow: 0 0 0 5px color-mix(in srgb, var(--day) 25%, transparent); }
 .tag.nowtag { background: var(--day); color: var(--surface); margin-left: 6px; }
 
 /* ---------- 天氣 ---------- */
-.wx { margin: 12px 18px 0; display: flex; flex-wrap: wrap; gap: 8px; }
-.wx .w {
-  display: inline-flex; gap: 8px; align-items: baseline; flex-wrap: wrap;
-  font-size: 13px; padding: 6px 10px; border-radius: 8px; background: var(--soft); border: 1px solid var(--line);
-}
+.wx { margin: 12px 16px 0; display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 13px; }
+.wx .w { display: inline-flex; gap: 6px; align-items: baseline; flex-wrap: wrap; }
 .wx .w b { font-weight: 700; }
-.wx .w .t { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
-.wx .w .rain { color: var(--sea); font-family: var(--font-mono); }
-.wx .w.wet { border-color: var(--sea); }
+.wx .w .t { font-family: var(--font-num); font-weight: 600; font-size: 15px; }
+.wx .w .rain { color: var(--muted); font-family: var(--font-num); font-size: 14px; }
+.wx .w.wet .rain { color: var(--sea); font-weight: 600; }
 .wx .src { flex-basis: 100%; font-size: 11px; color: var(--muted); }
-.wxstrip { margin-top: 14px; }
-.wxstrip h3 { font-size: 15px; margin: 0 0 8px; }
-.wxgrid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; }
+.wxstrip { margin-top: 22px; }
+.wxstrip h3 { font-family: var(--font-display); font-size: 20px; font-weight: 700; margin: 0 0 8px; }
+.wxgrid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .wxgrid a {
-  text-decoration: none; text-align: center; background: var(--surface); border: 1px solid var(--line);
-  border-top: 3px solid var(--day); border-radius: 10px; padding: 8px 4px; display: grid; gap: 2px; min-width: 0;
+  text-decoration: none; text-align: center; padding: 10px 2px; display: grid; gap: 1px; min-width: 0;
+  border-left: 1px solid var(--line); box-shadow: inset 0 3px 0 var(--day);
 }
-.wxgrid .d { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.wxgrid a:first-child { border-left: 0; }
+.wxgrid .d { font-family: var(--font-num); font-size: 13px; font-weight: 500; color: var(--muted); }
 .wxgrid .c { font-size: 14px; font-weight: 700; }
-.wxgrid .t { font-family: var(--font-mono); font-size: 12px; }
-.wxgrid .r { font-family: var(--font-mono); font-size: 11px; color: var(--sea); }
+.wxgrid .t { font-family: var(--font-num); font-size: 15px; font-weight: 600; }
+.wxgrid .r { font-family: var(--font-num); font-size: 13px; color: var(--sea); }
+
 @media (max-width: 480px) {
   .wxgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .live, .wx { margin-left: 14px; margin-right: 14px; }
-  .food { padding-left: 14px; padding-right: 14px; }
+  .wxgrid a:nth-child(4) { border-left: 0; }
+  .wxgrid a:nth-child(n+4) { border-top: 1px solid var(--line); }
+  ol.tl li { grid-template-columns: 46px 16px minmax(0, 1fr); column-gap: 8px; }
 }
-
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 </style>
 
 <header class="hero wrap">
-  <div class="dates">2026.11.05 — 11.10 ・ 4 人自由行</div>
-  <h1>京阪<span>六日</span></h1>
-  <p>京都住兩晚，跟團去天橋立和伊根，再到大阪住三晚，中間一天去奈良。</p>
-
-  <div class="route" aria-label="路線">
-    <ol>
-      <li><b>桃園</b><small>11/5 出發</small></li>
-      <li class="kyoto"><b>京都</b><small>D1–D2 ・ 2 晚</small></li>
-      <li class="sea"><b>天橋立・伊根</b><small>D3 一日團</small></li>
-      <li class="nara"><b>奈良</b><small>D4 半日</small></li>
-      <li class="osaka"><b>大阪</b><small>D3–D5 ・ 3 晚</small></li>
-      <li><b>桃園</b><small>11/10 回台</small></li>
-    </ol>
+  <div class="ticket">
+    <div class="kind"><b>乗車券</b><span>大人 4 名</span></div>
+    <h1>京阪六日</h1>
+    <p class="via">
+      <span>桃園</span><i>▶</i><span>関西空港</span><i>▶</i><span>京都</span><i>▶</i><span>天橋立・伊根</span><i>▶</i><span>奈良</span><i>▶</i><span>大阪</span><i>▶</i><span>桃園</span>
+    </p>
+    <p class="valid"><span><b>2026.11.5</b> から <b>11.10</b> まで有効</span><span>京都 2 泊、大阪 3 泊</span></p>
   </div>
-
-  <div class="legend">
-    <span><span class="tag booked">已預訂</span>已付款或時間固定</span>
-    <span><span class="tag flex">彈性</span>看體力決定</span>
-  </div>
+  <p class="lede"><span class="tag booked">已預訂</span>已付款或時間固定　<span class="tag flex">彈性</span>看體力決定</p>
 </header>
 
 <nav class="days" aria-label="日期">
@@ -395,24 +396,23 @@ ol.tl li.now .rail::after { background: var(--day); box-shadow: 0 0 0 5px color-
 <!-- D1 -->
 <section id="d1" class="day kyoto">
   <div class="sign">
-    <div class="top"><span class="num">DAY 1</span><span>11/5（四）</span></div>
+    <div class="kana">きよみずでら・ぎおん</div>
     <h2>清水寺・祇園</h2>
-    <div class="roma">KIYOMIZU-DERA ・ GION</div>
-    <div class="bar"><a href="#overview">← 出發</a><a href="#d2">嵐山・伏見稻荷 →</a></div>
+    <div class="bar"><a class="prev" href="#overview">總覽</a><span class="here">第 1 天　11/5（四）</span><a class="next" href="#d2">嵐山</a></div>
   </div>
   <div class="stayline">今晚住 <b>VIA INN 京都站八條口</b></div>
   <ol class="tl">
     <li data-tz="tw"><time>05:30</time><span class="rail"></span><div class="body"><h4>桃園機場第一航廈報到</h4><p>起飛前 3 小時到，報到、托運、出境。</p></div></li>
     <li class="fixed" data-tz="tw"><time>08:30</time><span class="rail"></span><div class="body"><h4>JX820 起飛 <span class="tag booked">已預訂</span></h4></div></li>
     <li class="fixed"><time>12:10</time><span class="rail"></span><div class="body"><h4>抵達關西機場</h4><p>入境時出示 Visit Japan Web 的 QR Code，領完行李約 40–60 分鐘。到 JR 售票處買「ICOCA &amp; HARUKA」優惠套票。</p></div></li>
-    <li class="mv"><time>13:15</time><span class="rail"></span><div class="body"><p><span class="mode">JR</span>特急 HARUKA 到京都，約 80 分鐘。午餐在機場買，或在車上吃鐵路便當。</p></div></li>
+    <li class="mv"><time>13:15</time><span class="rail"></span><div class="body"><p><span class="mode jr">JR</span>特急 HARUKA 到京都，約 80 分鐘。午餐在機場買，或在車上吃鐵路便當。</p></div></li>
     <li><time>14:45</time><span class="rail"></span><div class="body"><h4>VIA INN 京都站八條口</h4><p>從京都站八條口出站，走幾分鐘就到。先辦入住或寄放行李。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=ヴィアイン プライム 京都駅八条口" target="_blank" rel="noopener">地圖</a></div></li>
-    <li class="mv"><time>15:30</time><span class="rail"></span><div class="body"><p><span class="mode">巴士</span>市巴士 86、206 號到「五条坂」或「清水道」，約 20 分鐘，再上坡走 10 分鐘。4 個人搭計程車約 ¥1,500，比較划算。</p></div></li>
+    <li class="mv"><time>15:30</time><span class="rail"></span><div class="body"><p><span class="mode bus">巴士</span>市巴士 86、206 號到「五条坂」或「清水道」，約 20 分鐘，再上坡走 10 分鐘。4 個人搭計程車約 ¥1,500，比較划算。</p></div></li>
     <li><time>16:00</time><span class="rail"></span><div class="body"><h4>清水寺</h4><p>清水舞台、地主神社、音羽瀑布。門票約 ¥500，閉門時間出發前先查官網。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=清水寺" target="_blank" rel="noopener">地圖</a></div></li>
     <li><time>17:15</time><span class="rail"></span><div class="body"><h4>三年坂、二年坂、八坂塔</h4><p>沿著石板坡往下逛：七味家、%Arabica 咖啡、八坂庚申堂（彩色布猴）。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=二年坂" target="_blank" rel="noopener">地圖</a></div></li>
     <li><time>18:00</time><span class="rail"></span><div class="body"><h4>八坂神社、祇園白川、花見小路 <span class="tag flex">彈性</span></h4><p>點燈後最好看。花見小路的私人巷道禁止拍照。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=八坂神社" target="_blank" rel="noopener">地圖</a></div></li>
     <li><time>19:00</time><span class="rail"></span><div class="body"><h4>晚餐：先斗町或祇園 <span class="tag flex">彈性</span></h4><p>先斗町窄巷餐廳、鴨川邊。太累的話，改回京都站大樓 10F 的拉麵小路。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=先斗町" target="_blank" rel="noopener">地圖</a></div></li>
-    <li class="mv"><time>20:30</time><span class="rail"></span><div class="body"><p><span class="mode">京阪</span>從祇園四條搭京阪電車，或搭公車回京都站。</p></div></li>
+    <li class="mv"><time>20:30</time><span class="rail"></span><div class="body"><p><span class="mode keihan">京阪</span>從祇園四條搭京阪電車，或搭公車回京都站。</p></div></li>
   </ol>
   <div class="food">
     <h3>吃什麼</h3>
@@ -429,24 +429,23 @@ ol.tl li.now .rail::after { background: var(--day); box-shadow: 0 0 0 5px color-
 <!-- D2 -->
 <section id="d2" class="day kyoto">
   <div class="sign">
-    <div class="top"><span class="num">DAY 2</span><span>11/6（五）</span></div>
+    <div class="kana">あらしやま・にしきいちば・ふしみいなり</div>
     <h2>嵐山・錦市場・伏見稻荷</h2>
-    <div class="roma">ARASHIYAMA ・ NISHIKI ・ FUSHIMI INARI</div>
-    <div class="bar"><a href="#d1">← 清水寺・祇園</a><a href="#d3">天橋立・伊根 →</a></div>
+    <div class="bar"><a class="prev" href="#d1">清水寺</a><span class="here">第 2 天　11/6（五）</span><a class="next" href="#d3">天橋立</a></div>
   </div>
   <div class="stayline">今晚住 <b>VIA INN 京都站八條口</b></div>
   <ol class="tl">
-    <li class="mv"><time>07:30</time><span class="rail"></span><div class="body"><p><span class="mode">JR</span>京都站搭嵯峨野線到「嵯峨嵐山」，約 15 分鐘。</p></div></li>
+    <li class="mv"><time>07:30</time><span class="rail"></span><div class="body"><p><span class="mode jr">JR</span>京都站搭嵯峨野線到「嵯峨嵐山」，約 15 分鐘。</p></div></li>
     <li><time>08:00</time><span class="rail"></span><div class="body"><h4>嵐山竹林小徑</h4><p>9 點以後人潮會暴增，早上來比較好拍照。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=竹林の小径 嵐山" target="_blank" rel="noopener">地圖</a></div></li>
     <li><time>08:45</time><span class="rail"></span><div class="body"><h4>天龍寺</h4><p>世界遺產，曹源池庭園門票約 ¥500，可以從竹林那側的北門進出。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=天龍寺" target="_blank" rel="noopener">地圖</a></div></li>
     <li><time>09:30</time><span class="rail"></span><div class="body"><h4>大河內山莊 <span class="tag flex">彈性</span></h4><p>門票含抹茶和點心，人少景色好，可以遠眺京都市區。</p></div></li>
     <li><time>10:30</time><span class="rail"></span><div class="body"><h4>嵐山商店街、渡月橋</h4><p>邊走邊吃：抹茶冰淇淋、竹林可樂餅、嵐山昆布。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=渡月橋" target="_blank" rel="noopener">地圖</a></div></li>
     <li><time>12:00</time><span class="rail"></span><div class="body"><h4>午餐：嵐山</h4><p>湯豆腐是名物，也可以吃蕎麥麵或鯛魚茶泡飯。</p></div></li>
     <li><time>加碼</time><span class="rail"></span><div class="body"><h4>嵯峨野觀光小火車 <span class="tag flex">彈性</span></h4><p>要先上網預約，車程約 25 分鐘，看保津川溪谷。一搭就要多 2 小時，下午行程要跟著往後挪。</p></div></li>
-    <li class="mv"><time>13:00</time><span class="rail"></span><div class="body"><p><span class="mode">阪急</span>嵐山線轉京都線到「京都河原町」，約 25 分鐘。</p></div></li>
+    <li class="mv"><time>13:00</time><span class="rail"></span><div class="body"><p><span class="mode hankyu">阪急</span>嵐山線轉京都線到「京都河原町」，約 25 分鐘。</p></div></li>
     <li><time>13:45</time><span class="rail"></span><div class="body"><h4>錦市場</h4><p>玉子燒、豆乳甜甜圈、醃漬物、章魚蛋。很多店 17:00 左右收攤。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=錦市場" target="_blank" rel="noopener">地圖</a></div></li>
     <li><time>15:30</time><span class="rail"></span><div class="body"><h4>寺町、新京極商店街 <span class="tag flex">彈性</span></h4><p>和錦市場相連，可以逛藥妝店、伴手禮和錦天滿宮。</p></div></li>
-    <li class="mv"><time>16:30</time><span class="rail"></span><div class="body"><p><span class="mode">京阪</span>從「祇園四條」到「伏見稻荷」，約 10 分鐘。</p></div></li>
+    <li class="mv"><time>16:30</time><span class="rail"></span><div class="body"><p><span class="mode keihan">京阪</span>從「祇園四條」到「伏見稻荷」，約 10 分鐘。</p></div></li>
     <li><time>17:00</time><span class="rail"></span><div class="body"><h4>伏見稻荷大社</h4><p>24 小時開放，傍晚的千本鳥居人比較少。走到「四辻」約 40 分鐘，可以看夜景。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=伏見稲荷大社" target="_blank" rel="noopener">地圖</a></div></li>
     <li><time>19:00</time><span class="rail"></span><div class="body"><h4>晚餐：京都站周邊</h4><p>JR 稻荷站搭一站就到京都站。地下街 Porta、伊勢丹百貨的餐廳層。</p></div></li>
   </ol>
@@ -470,10 +469,9 @@ ol.tl li.now .rail::after { background: var(--day); box-shadow: 0 0 0 5px color-
 <!-- D3 -->
 <section id="d3" class="day sea">
   <div class="sign">
-    <div class="top"><span class="num">DAY 3</span><span>11/7（六）</span></div>
+    <div class="kana">あまのはしだて・いね</div>
     <h2>天橋立・伊根舟屋</h2>
-    <div class="roma">AMANOHASHIDATE ・ INE</div>
-    <div class="bar"><a href="#d2">← 嵐山・伏見稻荷</a><a href="#d4">奈良・心齋橋 →</a></div>
+    <div class="bar"><a class="prev" href="#d2">嵐山</a><span class="here">第 3 天　11/7（六）</span><a class="next" href="#d4">奈良</a></div>
   </div>
   <div class="stayline">京都退房 ・ 今晚住 <b>KOKO HOTEL 大阪難波千日前</b></div>
   <ol class="tl">
@@ -481,7 +479,7 @@ ol.tl li.now .rail::after { background: var(--day); box-shadow: 0 0 0 5px color-
     <li class="fixed"><time>08:30</time><span class="rail"></span><div class="body"><h4>一日團集合 <span class="tag booked">已預訂</span></h4><p><b>08:30 集合、08:45 開車，遲到不等人。</b>地點是京都站八條口包車巴士乘降場（Avanti 百貨前），從飯店走過去幾分鐘。巴士站很多，要認「Easy Go」的牌子。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=京都駅八条口 貸切バス乗降場" target="_blank" rel="noopener">地圖</a></div></li>
     <li><time>10:20</time><span class="rail"></span><div class="body"><h4>天橋立 View Land</h4><p>自由活動約 2 小時 20 分，吊椅門票已含在團費。上山看飛龍觀，彎腰從胯下倒看（股見）。下山後去智恩寺、迴旋橋，在商店街吃午餐（海鮮丼、智惠之餅）。空中腳踏車自費，一人 ¥300。</p></div></li>
     <li><time>13:30</time><span class="rail"></span><div class="body"><h4>伊根灣遊覽船、伊根舟屋散步</h4><p>遊船已含在團費，約 25 分鐘。上船前可以買蝦味先（¥100）餵海鷗。下船後在舟屋聚落散步，找間海景咖啡店坐一下。</p></div></li>
-    <li class="mv"><time>17:30</time><span class="rail"></span><div class="body"><p><span class="mode">巴士</span>先停京都站八條口，我們不在這裡下車。</p></div></li>
+    <li class="mv"><time>17:30</time><span class="rail"></span><div class="body"><p><span class="mode bus">巴士</span>先停京都站八條口，我們不在這裡下車。</p></div></li>
     <li class="fixed"><time>19:00</time><span class="rail"></span><div class="body"><h4>道頓堀下車</h4><p>在蟹道樂道頓堀東店前下車。時間是推估的，週六塞車可能更晚。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=かに道楽 道頓堀東店" target="_blank" rel="noopener">地圖</a></div></li>
     <li><time>19:15</time><span class="rail"></span><div class="body"><h4>KOKO HOTEL 入住</h4><p>從下車處走約 5 分鐘。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=KOKO HOTEL 大阪なんば 千日前" target="_blank" rel="noopener">地圖</a></div></li>
     <li><time>19:45</time><span class="rail"></span><div class="body"><h4>道頓堀晚餐</h4><p>大阪燒、章魚燒、串炸。飯後去固力果看板、法善寺橫丁。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=法善寺横丁" target="_blank" rel="noopener">地圖</a></div></li>
@@ -506,19 +504,18 @@ ol.tl li.now .rail::after { background: var(--day); box-shadow: 0 0 0 5px color-
 <!-- D4 -->
 <section id="d4" class="day nara">
   <div class="sign">
-    <div class="top"><span class="num">DAY 4</span><span>11/8（日）</span></div>
+    <div class="kana">なら・しんさいばし</div>
     <h2>奈良・心齋橋</h2>
-    <div class="roma">NARA ・ SHINSAIBASHI</div>
-    <div class="bar"><a href="#d3">← 天橋立・伊根</a><a href="#d5">大阪城・海遊館 →</a></div>
+    <div class="bar"><a class="prev" href="#d3">天橋立</a><span class="here">第 4 天　11/8（日）</span><a class="next" href="#d5">海遊館</a></div>
   </div>
   <div class="stayline">今晚住 <b>KOKO HOTEL 大阪難波千日前</b></div>
   <ol class="tl">
-    <li class="mv"><time>08:00</time><span class="rail"></span><div class="body"><p><span class="mode">近鐵</span>從「大阪難波」到「近鐵奈良」，約 40 分鐘。週日人多，早點出門。</p></div></li>
+    <li class="mv"><time>08:00</time><span class="rail"></span><div class="body"><p><span class="mode kintetsu">近鐵</span>從「大阪難波」到「近鐵奈良」，約 40 分鐘。週日人多，早點出門。</p></div></li>
     <li><time>09:00</time><span class="rail"></span><div class="body"><h4>奈良公園</h4><p>鹿仙貝約 ¥200。鹿會頂人、咬紙袋，購物袋要收好。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=奈良公園" target="_blank" rel="noopener">地圖</a></div></li>
     <li><time>10:00</time><span class="rail"></span><div class="body"><h4>東大寺</h4><p>南大門金剛力士像、大佛殿。順路去二月堂看奈良市景，免費。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=東大寺 大仏殿" target="_blank" rel="noopener">地圖</a></div></li>
     <li><time>11:15</time><span class="rail"></span><div class="body"><h4>春日大社 <span class="tag flex">彈性</span></h4><p>參道上有上千座石燈籠。</p></div></li>
     <li><time>12:00</time><span class="rail"></span><div class="body"><h4>午餐：奈良町、東向商店街</h4><p>柿葉壽司、中谷堂（高速搗麻糬）、釜飯。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=中谷堂 奈良" target="_blank" rel="noopener">地圖</a></div></li>
-    <li class="mv"><time>13:00</time><span class="rail"></span><div class="body"><p><span class="mode">近鐵</span>回「大阪難波」。</p></div></li>
+    <li class="mv"><time>13:00</time><span class="rail"></span><div class="body"><p><span class="mode kintetsu">近鐵</span>回「大阪難波」。</p></div></li>
     <li><time>14:00</time><span class="rail"></span><div class="body"><h4>心齋橋筋商店街、美國村</h4><p>藥妝、服飾、大丸百貨。美國村有古著和潮牌。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=心斎橋筋商店街" target="_blank" rel="noopener">地圖</a></div></li>
     <li><time>16:30</time><span class="rail"></span><div class="body"><h4>回飯店休息</h4></div></li>
     <li><time>18:00</time><span class="rail"></span><div class="body"><h4>晚上二選一 <span class="tag flex">彈性</span></h4><p><b>梅田：</b>梅田藍天大廈空中庭園看夜景，晚餐在梅田地下街。<br><b>新世界：</b>通天閣、串炸。第 5 天晚上也排了新世界，今晚選梅田比較不重複。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=梅田スカイビル 空中庭園展望台" target="_blank" rel="noopener">地圖</a></div></li>
@@ -538,23 +535,22 @@ ol.tl li.now .rail::after { background: var(--day); box-shadow: 0 0 0 5px color-
 <!-- D5 -->
 <section id="d5" class="day osaka">
   <div class="sign">
-    <div class="top"><span class="num">DAY 5</span><span>11/9（一）</span></div>
+    <div class="kana">おおさかじょう・かいゆうかん・あべの</div>
     <h2>大阪城・海遊館・阿倍野</h2>
-    <div class="roma">OSAKA CASTLE ・ KAIYUKAN ・ ABENO</div>
-    <div class="bar"><a href="#d4">← 奈良・心齋橋</a><a href="#d6">黑門市場・回台 →</a></div>
+    <div class="bar"><a class="prev" href="#d4">奈良</a><span class="here">第 5 天　11/9（一）</span><a class="next" href="#d6">回台</a></div>
   </div>
   <div class="stayline">今晚住 <b>KOKO HOTEL 大阪難波千日前</b></div>
   <ol class="tl">
-    <li class="mv"><time>08:15</time><span class="rail"></span><div class="body"><p><span class="mode">地鐵</span>御堂筋線到「本町」，轉中央線到「谷町四丁目」，約 20 分鐘。</p></div></li>
+    <li class="mv"><time>08:15</time><span class="rail"></span><div class="body"><p><span class="mode metro">地鐵</span>御堂筋線到「本町」，轉中央線到「谷町四丁目」，約 20 分鐘。</p></div></li>
     <li><time>08:45</time><span class="rail"></span><div class="body"><h4>大阪城公園、天守閣 <span class="tag flex">彈性</span></h4><p>天守閣 9:00 開門。從大手門進去，經過櫻門到天守閣，頂樓可以看大阪市景。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=大阪城天守閣" target="_blank" rel="noopener">地圖</a></div></li>
-    <li class="mv"><time>10:40</time><span class="rail"></span><div class="body"><p><span class="mode">地鐵</span>中央線從「谷町四丁目」直達「大阪港」，約 20 分鐘，再走 5–10 分鐘。</p></div></li>
+    <li class="mv"><time>10:40</time><span class="rail"></span><div class="body"><p><span class="mode metro">地鐵</span>中央線從「谷町四丁目」直達「大阪港」，約 20 分鐘，再走 5–10 分鐘。</p></div></li>
     <li class="fixed"><time>11:30</time><span class="rail"></span><div class="body"><h4>海遊館 <span class="tag booked">已預訂</span></h4><p><b>11:30 開始入場，提早 10–15 分鐘排隊。</b>先搭電扶梯到最上層，再沿螺旋坡道往下逛。重點是「太平洋」大水槽的鯨鯊，餵食時間貼在入口。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=海遊館" target="_blank" rel="noopener">地圖</a></div></li>
     <li><time>14:00</time><span class="rail"></span><div class="body"><h4>午餐：天保山 Market Place</h4><p>就在海遊館隔壁。原本推薦的 2F「浪花美食橫丁」從 2026/9/29 起停業整修，預計 2027 年 3 月重新開幕，只能吃館內其他餐廳或美食街。</p><a class="maplink" href="https://www.kaiyukan.com/thv/marketplace/info.html" target="_blank" rel="noopener">營業日曆</a></div></li>
     <li><time>15:00</time><span class="rail"></span><div class="body"><h4>天保山大摩天輪 <span class="tag flex">彈性</span></h4><p>繞一圈約 15 分鐘，有全透明的車廂可選。</p></div></li>
-    <li class="mv"><time>15:45</time><span class="rail"></span><div class="body"><p><span class="mode">地鐵</span>中央線到「本町」，轉御堂筋線到「天王寺」，約 35 分鐘。</p></div></li>
+    <li class="mv"><time>15:45</time><span class="rail"></span><div class="body"><p><span class="mode metro">地鐵</span>中央線到「本町」，轉御堂筋線到「天王寺」，約 35 分鐘。</p></div></li>
     <li><time>16:30</time><span class="rail"></span><div class="body"><h4>阿倍野 HARUKAS 300 展望台 <span class="tag flex">彈性</span></h4><p>大約 17:00 日落，可以一次看到夕陽和夜景。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=ハルカス300" target="_blank" rel="noopener">地圖</a></div></li>
     <li><time>18:00</time><span class="rail"></span><div class="body"><h4>晚餐：新世界</h4><p>從天王寺走過去約 15 分鐘。通天閣、串炸（醬汁不可沾兩次）。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=通天閣" target="_blank" rel="noopener">地圖</a></div></li>
-    <li class="mv"><time>20:00</time><span class="rail"></span><div class="body"><p><span class="mode">地鐵</span>從「動物園前」搭御堂筋線回難波，約 5 分鐘。</p></div></li>
+    <li class="mv"><time>20:00</time><span class="rail"></span><div class="body"><p><span class="mode metro">地鐵</span>從「動物園前」搭御堂筋線回難波，約 5 分鐘。</p></div></li>
   </ol>
   <div class="notes">
     <div class="note"><b>想睡晚一點：</b>跳過大阪城，早上去黑門市場吃早午餐（從飯店走約 10 分鐘，大部分攤位 9:00 後才開），10:30 再出發到海遊館。這樣第 6 天早上就改逛難波。</div>
@@ -573,17 +569,16 @@ ol.tl li.now .rail::after { background: var(--day); box-shadow: 0 0 0 5px color-
 <!-- D6 -->
 <section id="d6" class="day osaka">
   <div class="sign">
-    <div class="top"><span class="num">DAY 6</span><span>11/10（二）</span></div>
+    <div class="kana">くろもんいちば・かんさいくうこう</div>
     <h2>黑門市場・回台</h2>
-    <div class="roma">KUROMON ・ KANSAI AIRPORT</div>
-    <div class="bar"><a href="#d5">← 大阪城・海遊館</a><a href="#info">行前資訊 →</a></div>
+    <div class="bar"><a class="prev" href="#d5">海遊館</a><span class="here">第 6 天　11/10（二）</span><a class="next" href="#info">行前資訊</a></div>
   </div>
   <div class="stayline">KOKO HOTEL 退房</div>
   <ol class="tl">
     <li><time>08:00</time><span class="rail"></span><div class="body"><h4>打包、難波最後採買 <span class="tag flex">彈性</span></h4><p>唐吉訶德 24 小時營業，一早就能逛。黑門市場大部分攤位 9:00 後才開，不要太早去。</p></div></li>
     <li><time>09:00</time><span class="rail"></span><div class="body"><h4>黑門市場早午餐</h4><p>從飯店走約 10 分鐘。鮪魚、海鮮丼、海鮮燒、和牛串、水果。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=黒門市場" target="_blank" rel="noopener">地圖</a></div></li>
     <li><time>10:45</time><span class="rail"></span><div class="body"><h4>KOKO HOTEL 退房</h4></div></li>
-    <li class="mv"><time>11:15</time><span class="rail"></span><div class="body"><p><span class="mode">南海</span>從「難波」到關西機場。特急 rapi:t 約 40 分鐘（全車對號座），或空港急行約 45 分鐘。</p></div></li>
+    <li class="mv"><time>11:15</time><span class="rail"></span><div class="body"><p><span class="mode nankai">南海</span>從「難波」到關西機場。特急 rapi:t 約 40 分鐘（全車對號座），或空港急行約 45 分鐘。</p></div></li>
     <li><time>12:00</time><span class="rail"></span><div class="body"><h4>抵達關西機場</h4><p>起飛前 3 小時到。報到、托運、退稅確認、出境。</p></div></li>
     <li class="fixed"><time>15:10</time><span class="rail"></span><div class="body"><h4>JX823 起飛 <span class="tag booked">已預訂</span></h4></div></li>
     <li class="fixed" data-tz="tw"><time>17:05</time><span class="rail"></span><div class="body"><h4>抵達桃園</h4><p>台灣時間。</p></div></li>
@@ -762,7 +757,7 @@ ol.tl li.now .rail::after { background: var(--day); box-shadow: 0 0 0 5px color-
   var countdown = document.createElement("p");
   countdown.className = "countdown";
   countdown.hidden = true;
-  document.querySelector("header.hero > p").after(countdown);
+  document.querySelector(".ticket .valid").after(countdown);
 
   function tick() {
     var now = Date.now();
