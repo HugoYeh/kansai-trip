@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>京阪六日自由行</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: 每天是一塊「站名標」+ 路線圖式時間軸；城市用顏色區分（京都紫、海之京都藍綠、奈良苔綠、大阪柿橙） */
+:root {
+  --paper: #EEF0F4;
+  --surface: #FFFFFF;
+  --ink: #1A2036;
+  --muted: #5D6680;
+  --line: #D6DBE6;
+  --soft: #F5F6F9;
+  --kyoto: #5B4A8B;
+  --sea: #17788A;
+  --nara: #4D7536;
+  --osaka: #C2531B;
+  --booked: #237452;
+  --booked-soft: #E1F2EA;
+  --flex: #87661A;
+  --flex-soft: #F6EDD6;
+  --warn: #B23A2E;
+  --warn-soft: #FBE6E2;
+  --font-display: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
+  --font-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "Consolas", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0E111B; --surface: #171C2B; --ink: #E7EAF2; --muted: #9AA3BA; --line: #2A3246; --soft: #1D2335;
+    --kyoto: #B3A2E6; --sea: #5CC6D6; --nara: #9DCB7E; --osaka: #F0915C;
+    --booked: #6FCB9F; --booked-soft: #173327; --flex: #DDBB61; --flex-soft: #352C14; --warn: #F08A7C; --warn-soft: #3A1E1B;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0E111B; --surface: #171C2B; --ink: #E7EAF2; --muted: #9AA3BA; --line: #2A3246; --soft: #1D2335;
+  --kyoto: #B3A2E6; --sea: #5CC6D6; --nara: #9DCB7E; --osaka: #F0915C;
+  --booked: #6FCB9F; --booked-soft: #173327; --flex: #DDBB61; --flex-soft: #352C14; --warn: #F08A7C; --warn-soft: #3A1E1B;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--paper); color: var(--ink);
+  font-family: var(--font-body); font-size: 15px; line-height: 1.7;
+}
+a { color: inherit; }
+a:focus-visible, input:focus-visible { outline: 2px solid var(--osaka); outline-offset: 2px; border-radius: 4px; }
+.wrap {
+  max-width: 720px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.kyoto { --day: var(--kyoto); }
+.sea { --day: var(--sea); }
+.nara { --day: var(--nara); }
+.osaka { --day: var(--osaka); }
+
+/* ---------- 封面 ---------- */
+header.hero { padding-block: 36px 24px; }
+.hero .dates { font-family: var(--font-mono); font-size: 13px; letter-spacing: .1em; color: var(--muted); }
+.hero h1 {
+  font-family: var(--font-display); font-weight: 900;
+  font-size: clamp(40px, 11vw, 64px); line-height: 1.05; margin: 8px 0 10px; letter-spacing: .02em;
+}
+.hero h1 span { color: var(--osaka); }
+.hero p { margin: 0; color: var(--muted); max-width: 34em; }
+
+/* 路線圖 */
+.route { margin-top: 24px; overflow-x: auto; padding-bottom: 4px; }
+.route ol { list-style: none; margin: 0; padding: 0; display: flex; min-width: 520px; }
+.route li { flex: 1 1 0; position: relative; text-align: center; padding-top: 22px; }
+.route li::before {
+  content: ""; position: absolute; top: 8px; left: 0; right: 0; height: 4px; background: var(--day, var(--muted));
+}
+.route li:first-child::before { left: 50%; }
+.route li:last-child::before { right: 50%; }
+.route li::after {
+  content: ""; position: absolute; top: 2px; left: 50%; transform: translateX(-50%);
+  width: 16px; height: 16px; border-radius: 50%; background: var(--surface); border: 4px solid var(--day, var(--muted));
+}
+.route b { display: block; font-size: 15px; }
+.route small { display: block; font-size: 12px; color: var(--muted); line-height: 1.4; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 18px; font-size: 13px; color: var(--muted); align-items: center; }
+.legend > span { display: inline-flex; gap: 6px; align-items: center; }
+
+/* ---------- 日期列 ---------- */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
+nav.days {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+nav.days .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: none; }
+nav.days .wrap::-webkit-scrollbar { display: none; }
+nav.days a {
+  flex: 0 0 auto; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid var(--line); background: var(--surface);
+  border-radius: 999px; padding: 3px 12px 3px 10px; font-size: 13px; white-space: nowrap;
+}
+nav.days a i { width: 8px; height: 8px; border-radius: 50%; background: var(--day, var(--muted)); }
+nav.days a b { font-family: var(--font-mono); font-weight: 600; }
+nav.days a.today { border-color: var(--day, var(--ink)); box-shadow: 0 0 0 1px var(--day, var(--ink)) inset; }
+nav.days a[aria-current="page"] { background: var(--day, var(--ink)); border-color: var(--day, var(--ink)); color: var(--surface); }
+nav.days a[aria-current="page"] i { background: var(--surface); }
+
+/* 分頁底部的上一頁、下一頁 */
+.pager { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+.pager a {
+  display: flex; flex-direction: column; gap: 2px; text-decoration: none; min-width: 0;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px;
+}
+.pager a.next { text-align: right; grid-column: 2; }
+.pager small { font-size: 12px; color: var(--muted); }
+.pager b { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pager a:hover { border-color: var(--muted); }
+
+main { padding-block: 20px 40px; }
+section { scroll-margin-top: 60px; }
+.sec-title { font-family: var(--font-display); font-weight: 900; font-size: 24px; margin: 0 0 14px; }
+
+/* ---------- 標籤 ---------- */
+.tag { display: inline-block; font-size: 12px; line-height: 1; padding: 4px 7px; border-radius: 4px; font-weight: 500; white-space: nowrap; vertical-align: 2px; }
+.tag.booked { background: var(--booked-soft); color: var(--booked); }
+.tag.flex { background: var(--flex-soft); color: var(--flex); }
+.mode {
+  display: inline-block; font-size: 11px; line-height: 1; padding: 3px 6px; border-radius: 3px;
+  border: 1px solid var(--day); color: var(--day); font-weight: 700; margin-right: 6px; vertical-align: 1px; white-space: nowrap;
+}
+
+/* ---------- 登機證 ---------- */
+.passes { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+.pass {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+  display: grid; grid-template-columns: 1fr auto; min-width: 0; overflow: hidden;
+}
+.pass .main { padding: 14px 16px; min-width: 0; }
+.pass .stub {
+  padding: 14px 16px; border-left: 2px dashed var(--line); text-align: center;
+  display: flex; flex-direction: column; justify-content: center; gap: 2px; background: var(--soft);
+}
+.pass .lbl { font-size: 12px; color: var(--muted); }
+.pass .legs { display: flex; align-items: center; gap: 10px; margin: 4px 0 2px; }
+.pass .iata { font-family: var(--font-mono); font-weight: 600; font-size: 26px; line-height: 1; }
+.pass .arrow { flex: 1; height: 2px; background: var(--line); position: relative; min-width: 24px; }
+.pass .arrow::after { content: ""; position: absolute; right: -1px; top: -4px; border: 5px solid transparent; border-left-color: var(--muted); border-right: 0; }
+.pass .times { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 14px; color: var(--muted); }
+.pass .no { font-family: var(--font-mono); font-weight: 600; font-size: 16px; }
+
+/* ---------- 住宿 ---------- */
+.stays { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin-top: 12px; }
+.stay {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; min-width: 0;
+  border-top: 4px solid var(--day);
+}
+.stay .lbl { font-size: 12px; color: var(--day); font-weight: 700; letter-spacing: .04em; }
+.stay h3 { margin: 2px 0 4px; font-size: 16px; }
+.stay p { margin: 0; font-size: 14px; color: var(--muted); }
+.fine { font-size: 13px; color: var(--muted); margin: 10px 0 0; }
+
+.maplink {
+  display: inline-flex; align-items: center; gap: 4px; margin-top: 6px;
+  font-size: 12px; text-decoration: none; color: var(--day, var(--muted));
+  border: 1px solid currentColor; border-radius: 999px; padding: 1px 9px; line-height: 1.6;
+}
+.maplink::after { content: "↗"; font-size: 11px; }
+
+/* ---------- 每日卡片 ---------- */
+.day { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+
+/* 站名標 */
+.sign { padding: 18px 18px 0; text-align: center; }
+.sign .top { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; color: var(--muted); }
+.sign .top .num { font-family: var(--font-mono); font-weight: 600; color: var(--day); font-size: 14px; }
+.sign h2 { font-family: var(--font-display); font-weight: 900; font-size: clamp(26px, 7vw, 34px); line-height: 1.2; margin: 6px 0 0; text-wrap: balance; }
+.sign .roma { font-family: var(--font-mono); font-size: 12px; letter-spacing: .14em; color: var(--muted); margin-top: 2px; }
+.sign .bar {
+  margin: 14px -18px 0; background: var(--day); color: var(--surface);
+  display: flex; justify-content: space-between; gap: 8px; padding: 6px 14px; font-size: 13px; font-weight: 500;
+}
+.sign .bar a { text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sign .bar a:hover { text-decoration: underline; }
+.stayline { padding: 10px 18px; font-size: 13px; color: var(--muted); border-bottom: 1px solid var(--line); background: var(--soft); }
+.stayline b { color: var(--ink); font-weight: 500; }
+
+/* 路線圖式時間軸 */
+ol.tl { list-style: none; margin: 0; padding: 16px 18px 6px 10px; }
+ol.tl li { display: grid; grid-template-columns: 50px 18px minmax(0, 1fr); column-gap: 10px; }
+ol.tl time {
+  font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 600;
+  font-size: 14px; text-align: right; padding-top: 1px; line-height: 1.5;
+}
+ol.tl .rail { position: relative; }
+ol.tl .rail::before {
+  content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; transform: translateX(-50%); background: var(--day);
+}
+ol.tl li:first-child .rail::before { top: 10px; }
+ol.tl li:last-child .rail::before { bottom: auto; height: 10px; }
+ol.tl .rail::after {
+  content: ""; position: absolute; left: 50%; top: 4px; transform: translateX(-50%);
+  width: 16px; height: 16px; border-radius: 50%; background: var(--surface); border: 4px solid var(--day);
+}
+ol.tl li.fixed .rail::after { background: var(--day); }
+ol.tl .body { padding-bottom: 18px; min-width: 0; }
+ol.tl h4 { margin: 0; font-size: 16px; font-weight: 700; line-height: 1.5; }
+ol.tl p { margin: 2px 0 0; font-size: 14px; color: var(--muted); }
+ol.tl p b { color: var(--ink); }
+
+ol.tl li.mv time { font-size: 12px; font-weight: 500; color: var(--muted); }
+ol.tl li.mv .rail::before {
+  background: repeating-linear-gradient(to bottom, var(--day) 0 5px, transparent 5px 9px);
+}
+ol.tl li.mv .rail::after { display: none; }
+ol.tl li.mv .body { padding-bottom: 14px; }
+ol.tl li.mv p { margin: 0; font-size: 13px; }
+
+.notes { padding: 0 18px 18px; display: grid; gap: 8px; }
+.note { font-size: 14px; padding: 10px 12px; border-radius: 8px; background: var(--flex-soft); }
+.note.warn { background: var(--warn-soft); }
+.note b { font-weight: 700; }
+.note.warn b { color: var(--warn); }
+.note:not(.warn) b { color: var(--flex); }
+
+/* ---------- 行前資訊 ---------- */
+.info { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; min-width: 0; }
+.card h3 { margin: 0 0 8px; font-size: 16px; }
+.card p { margin: 0; font-size: 14px; }
+ul.list { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 14px; }
+ul.check { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; font-size: 14px; }
+ul.check li { display: flex; gap: 10px; align-items: flex-start; }
+ul.check input { margin-top: 4px; accent-color: var(--booked); width: 17px; height: 17px; flex: 0 0 auto; }
+ul.check input:checked + label { color: var(--muted); text-decoration: line-through; }
+
+footer { color: var(--muted); font-size: 12px; padding-block: 0 40px; }
+
+@media (max-width: 480px) {
+  ol.tl { padding: 14px 14px 4px 4px; }
+  ol.tl li { grid-template-columns: 46px 16px minmax(0, 1fr); column-gap: 8px; }
+  .sign { padding: 16px 14px 0; }
+  .sign .bar { margin: 14px -14px 0; }
+  .stayline, .notes { padding-left: 14px; padding-right: 14px; }
+  .pass .stub { padding: 12px; }
+  .pass .iata { font-size: 22px; }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+
+<header class="hero wrap">
+  <div class="dates">2026.11.05 — 11.10 ・ 4 人自由行</div>
+  <h1>京阪<span>六日</span></h1>
+  <p>京都住兩晚，跟團去天橋立和伊根，再到大阪住三晚，中間一天去奈良。</p>
+
+  <div class="route" aria-label="路線">
+    <ol>
+      <li><b>桃園</b><small>11/5 出發</small></li>
+      <li class="kyoto"><b>京都</b><small>D1–D2 ・ 2 晚</small></li>
+      <li class="sea"><b>天橋立・伊根</b><small>D3 一日團</small></li>
+      <li class="nara"><b>奈良</b><small>D4 半日</small></li>
+      <li class="osaka"><b>大阪</b><small>D3–D5 ・ 3 晚</small></li>
+      <li><b>桃園</b><small>11/10 回台</small></li>
+    </ol>
+  </div>
+
+  <div class="legend">
+    <span><span class="tag booked">已預訂</span>已付款或時間固定</span>
+    <span><span class="tag flex">彈性</span>看體力決定</span>
+  </div>
+</header>
+
+<nav class="days" aria-label="日期">
+  <div class="wrap">
+    <a href="#overview">航班與住宿</a>
+    <a href="#d1" class="kyoto" data-date="2026-11-05"><i></i><b>D1</b>11/5 四</a>
+    <a href="#d2" class="kyoto" data-date="2026-11-06"><i></i><b>D2</b>11/6 五</a>
+    <a href="#d3" class="sea" data-date="2026-11-07"><i></i><b>D3</b>11/7 六</a>
+    <a href="#d4" class="nara" data-date="2026-11-08"><i></i><b>D4</b>11/8 日</a>
+    <a href="#d5" class="osaka" data-date="2026-11-09"><i></i><b>D5</b>11/9 一</a>
+    <a href="#d6" class="osaka" data-date="2026-11-10"><i></i><b>D6</b>11/10 二</a>
+    <a href="#info">行前資訊</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section id="overview">
+  <h2 class="sec-title">航班與住宿</h2>
+  <div class="passes">
+    <div class="pass">
+      <div class="main">
+        <div class="lbl">去程 ・ 11/5（四）</div>
+        <div class="legs"><span class="iata">TPE</span><span class="arrow"></span><span class="iata">KIX</span></div>
+        <div class="times"><span>08:30</span><span>12:10</span></div>
+      </div>
+      <div class="stub"><span class="lbl">星宇航空</span><span class="no">JX820</span><span class="tag booked">已預訂</span></div>
+    </div>
+    <div class="pass">
+      <div class="main">
+        <div class="lbl">回程 ・ 11/10（二）</div>
+        <div class="legs"><span class="iata">KIX</span><span class="arrow"></span><span class="iata">TPE</span></div>
+        <div class="times"><span>15:10</span><span>17:05</span></div>
+      </div>
+      <div class="stub"><span class="lbl">星宇航空</span><span class="no">JX823</span><span class="tag booked">已預訂</span></div>
+    </div>
+  </div>
+  <p class="fine">航班時間是查第三方資料得到的，以電子機票為準。時間皆為當地時間。</p>
+
+  <div class="stays">
+    <div class="stay kyoto">
+      <div class="lbl">京都 ・ 11/5 – 11/7 ・ 2 晚</div>
+      <h3>VIA INN PRIME 京都站八條口</h3>
+      <p>京都市南區東九条上殿田町 44-1</p>
+      <p class="mono">+81-75-662-5489</p>
+      <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=ヴィアイン プライム 京都駅八条口" target="_blank" rel="noopener">地圖</a>
+    </div>
+    <div class="stay osaka">
+      <div class="lbl">大阪 ・ 11/7 – 11/10 ・ 3 晚</div>
+      <h3>KOKO HOTEL 大阪難波千日前</h3>
+      <p>大阪市中央區千日前 1-3-7</p>
+      <p class="mono">+81-6-6211-1001</p>
+      <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=KOKO HOTEL 大阪なんば 千日前" target="_blank" rel="noopener">地圖</a>
+    </div>
+  </div>
+</section>
+
+<!-- D1 -->
+<section id="d1" class="day kyoto">
+  <div class="sign">
+    <div class="top"><span class="num">DAY 1</span><span>11/5（四）</span></div>
+    <h2>清水寺・祇園</h2>
+    <div class="roma">KIYOMIZU-DERA ・ GION</div>
+    <div class="bar"><a href="#overview">← 出發</a><a href="#d2">嵐山・伏見稻荷 →</a></div>
+  </div>
+  <div class="stayline">今晚住 <b>VIA INN 京都站八條口</b></div>
+  <ol class="tl">
+    <li><time>05:30</time><span class="rail"></span><div class="body"><h4>桃園機場第一航廈報到</h4><p>起飛前 3 小時到，報到、托運、出境。</p></div></li>
+    <li class="fixed"><time>08:30</time><span class="rail"></span><div class="body"><h4>JX820 起飛 <span class="tag booked">已預訂</span></h4></div></li>
+    <li class="fixed"><time>12:10</time><span class="rail"></span><div class="body"><h4>抵達關西機場</h4><p>入境時出示 Visit Japan Web 的 QR Code，領完行李約 40–60 分鐘。到 JR 售票處買「ICOCA &amp; HARUKA」優惠套票。</p></div></li>
+    <li class="mv"><time>13:15</time><span class="rail"></span><div class="body"><p><span class="mode">JR</span>特急 HARUKA 到京都，約 80 分鐘。午餐在機場買，或在車上吃鐵路便當。</p></div></li>
+    <li><time>14:45</time><span class="rail"></span><div class="body"><h4>VIA INN 京都站八條口</h4><p>從京都站八條口出站，走幾分鐘就到。先辦入住或寄放行李。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=ヴィアイン プライム 京都駅八条口" target="_blank" rel="noopener">地圖</a></div></li>
+    <li class="mv"><time>15:30</time><span class="rail"></span><div class="body"><p><span class="mode">巴士</span>市巴士 86、206 號到「五条坂」或「清水道」，約 20 分鐘，再上坡走 10 分鐘。4 個人搭計程車約 ¥1,500，比較划算。</p></div></li>
+    <li><time>16:00</time><span class="rail"></span><div class="body"><h4>清水寺</h4><p>清水舞台、地主神社、音羽瀑布。門票約 ¥500，閉門時間出發前先查官網。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=清水寺" target="_blank" rel="noopener">地圖</a></div></li>
+    <li><time>17:15</time><span class="rail"></span><div class="body"><h4>三年坂、二年坂、八坂塔</h4><p>沿著石板坡往下逛：七味家、%Arabica 咖啡、八坂庚申堂（彩色布猴）。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=二年坂" target="_blank" rel="noopener">地圖</a></div></li>
+    <li><time>18:00</time><span class="rail"></span><div class="body"><h4>八坂神社、祇園白川、花見小路 <span class="tag flex">彈性</span></h4><p>點燈後最好看。花見小路的私人巷道禁止拍照。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=八坂神社" target="_blank" rel="noopener">地圖</a></div></li>
+    <li><time>19:00</time><span class="rail"></span><div class="body"><h4>晚餐：先斗町或祇園 <span class="tag flex">彈性</span></h4><p>先斗町窄巷餐廳、鴨川邊。太累的話，改回京都站大樓 10F 的拉麵小路。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=先斗町" target="_blank" rel="noopener">地圖</a></div></li>
+    <li class="mv"><time>20:30</time><span class="rail"></span><div class="body"><p><span class="mode">京阪</span>從祇園四條搭京阪電車，或搭公車回京都站。</p></div></li>
+  </ol>
+</section>
+
+<!-- D2 -->
+<section id="d2" class="day kyoto">
+  <div class="sign">
+    <div class="top"><span class="num">DAY 2</span><span>11/6（五）</span></div>
+    <h2>嵐山・錦市場・伏見稻荷</h2>
+    <div class="roma">ARASHIYAMA ・ NISHIKI ・ FUSHIMI INARI</div>
+    <div class="bar"><a href="#d1">← 清水寺・祇園</a><a href="#d3">天橋立・伊根 →</a></div>
+  </div>
+  <div class="stayline">今晚住 <b>VIA INN 京都站八條口</b></div>
+  <ol class="tl">
+    <li class="mv"><time>07:30</time><span class="rail"></span><div class="body"><p><span class="mode">JR</span>京都站搭嵯峨野線到「嵯峨嵐山」，約 15 分鐘。</p></div></li>
+    <li><time>08:00</time><span class="rail"></span><div class="body"><h4>嵐山竹林小徑</h4><p>9 點以後人潮會暴增，早上來比較好拍照。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=竹林の小径 嵐山" target="_blank" rel="noopener">地圖</a></div></li>
+    <li><time>08:45</time><span class="rail"></span><div class="body"><h4>天龍寺</h4><p>世界遺產，曹源池庭園門票約 ¥500，可以從竹林那側的北門進出。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=天龍寺" target="_blank" rel="noopener">地圖</a></div></li>
+    <li><time>09:30</time><span class="rail"></span><div class="body"><h4>大河內山莊 <span class="tag flex">彈性</span></h4><p>門票含抹茶和點心，人少景色好，可以遠眺京都市區。</p></div></li>
+    <li><time>10:30</time><span class="rail"></span><div class="body"><h4>嵐山商店街、渡月橋</h4><p>邊走邊吃：抹茶冰淇淋、竹林可樂餅、嵐山昆布。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=渡月橋" target="_blank" rel="noopener">地圖</a></div></li>
+    <li><time>12:00</time><span class="rail"></span><div class="body"><h4>午餐：嵐山</h4><p>湯豆腐是名物，也可以吃蕎麥麵或鯛魚茶泡飯。</p></div></li>
+    <li><time>加碼</time><span class="rail"></span><div class="body"><h4>嵯峨野觀光小火車 <span class="tag flex">彈性</span></h4><p>要先上網預約，車程約 25 分鐘，看保津川溪谷。一搭就要多 2 小時，下午行程要跟著往後挪。</p></div></li>
+    <li class="mv"><time>13:00</time><span class="rail"></span><div class="body"><p><span class="mode">阪急</span>嵐山線轉京都線到「京都河原町」，約 25 分鐘。</p></div></li>
+    <li><time>13:45</time><span class="rail"></span><div class="body"><h4>錦市場</h4><p>玉子燒、豆乳甜甜圈、醃漬物、章魚蛋。很多店 17:00 左右收攤。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=錦市場" target="_blank" rel="noopener">地圖</a></div></li>
+    <li><time>15:30</time><span class="rail"></span><div class="body"><h4>寺町、新京極商店街 <span class="tag flex">彈性</span></h4><p>和錦市場相連，可以逛藥妝店、伴手禮和錦天滿宮。</p></div></li>
+    <li class="mv"><time>16:30</time><span class="rail"></span><div class="body"><p><span class="mode">京阪</span>從「祇園四條」到「伏見稻荷」，約 10 分鐘。</p></div></li>
+    <li><time>17:00</time><span class="rail"></span><div class="body"><h4>伏見稻荷大社</h4><p>24 小時開放，傍晚的千本鳥居人比較少。走到「四辻」約 40 分鐘，可以看夜景。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=伏見稲荷大社" target="_blank" rel="noopener">地圖</a></div></li>
+    <li><time>19:00</time><span class="rail"></span><div class="body"><h4>晚餐：京都站周邊</h4><p>JR 稻荷站搭一站就到京都站。地下街 Porta、伊勢丹百貨的餐廳層。</p></div></li>
+  </ol>
+  <div class="notes">
+    <div class="note warn"><b>今晚要做：</b>確認一日團能不能帶行李箱。業者回覆不行的話，請飯店櫃台把大行李宅配到 KOKO HOTEL，當晚的換洗衣物另外裝一個小包。</div>
+    <div class="note"><b>雨天備案：</b>嵐山改去三十三間堂或京都國立博物館（室內）。錦市場和新京極有遮雨棚。</div>
+  </div>
+</section>
+
+<!-- D3 -->
+<section id="d3" class="day sea">
+  <div class="sign">
+    <div class="top"><span class="num">DAY 3</span><span>11/7（六）</span></div>
+    <h2>天橋立・伊根舟屋</h2>
+    <div class="roma">AMANOHASHIDATE ・ INE</div>
+    <div class="bar"><a href="#d2">← 嵐山・伏見稻荷</a><a href="#d4">奈良・心齋橋 →</a></div>
+  </div>
+  <div class="stayline">京都退房 ・ 今晚住 <b>KOKO HOTEL 大阪難波千日前</b></div>
+  <ol class="tl">
+    <li><time>07:30</time><span class="rail"></span><div class="body"><h4>早餐、京都飯店退房</h4></div></li>
+    <li class="fixed"><time>08:30</time><span class="rail"></span><div class="body"><h4>一日團集合 <span class="tag booked">已預訂</span></h4><p><b>08:30 集合、08:45 開車，遲到不等人。</b>地點是京都站八條口包車巴士乘降場（Avanti 百貨前），從飯店走過去幾分鐘。巴士站很多，要認「Easy Go」的牌子。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=京都駅八条口 貸切バス乗降場" target="_blank" rel="noopener">地圖</a></div></li>
+    <li><time>10:20</time><span class="rail"></span><div class="body"><h4>天橋立 View Land</h4><p>自由活動約 2 小時 20 分，吊椅門票已含在團費。上山看飛龍觀，彎腰從胯下倒看（股見）。下山後去智恩寺、迴旋橋，在商店街吃午餐（海鮮丼、智惠之餅）。空中腳踏車自費，一人 ¥300。</p></div></li>
+    <li><time>13:30</time><span class="rail"></span><div class="body"><h4>伊根灣遊覽船、伊根舟屋散步</h4><p>遊船已含在團費，約 25 分鐘。上船前可以買蝦味先（¥100）餵海鷗。下船後在舟屋聚落散步，找間海景咖啡店坐一下。</p></div></li>
+    <li class="mv"><time>17:30</time><span class="rail"></span><div class="body"><p><span class="mode">巴士</span>先停京都站八條口，我們不在這裡下車。</p></div></li>
+    <li class="fixed"><time>19:00</time><span class="rail"></span><div class="body"><h4>道頓堀下車</h4><p>在蟹道樂道頓堀東店前下車。時間是推估的，週六塞車可能更晚。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=かに道楽 道頓堀東店" target="_blank" rel="noopener">地圖</a></div></li>
+    <li><time>19:15</time><span class="rail"></span><div class="body"><h4>KOKO HOTEL 入住</h4><p>從下車處走約 5 分鐘。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=KOKO HOTEL 大阪なんば 千日前" target="_blank" rel="noopener">地圖</a></div></li>
+    <li><time>19:45</time><span class="rail"></span><div class="body"><h4>道頓堀晚餐</h4><p>大阪燒、章魚燒、串炸。飯後去固力果看板、法善寺橫丁。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=法善寺横丁" target="_blank" rel="noopener">地圖</a></div></li>
+  </ol>
+  <div class="notes">
+    <div class="note"><b>行李：</b>每人限帶一件 28–29 吋以內的行李箱，要先在 KKday 的「填寫行程資料」備註。</div>
+  </div>
+</section>
+
+<!-- D4 -->
+<section id="d4" class="day nara">
+  <div class="sign">
+    <div class="top"><span class="num">DAY 4</span><span>11/8（日）</span></div>
+    <h2>奈良・心齋橋</h2>
+    <div class="roma">NARA ・ SHINSAIBASHI</div>
+    <div class="bar"><a href="#d3">← 天橋立・伊根</a><a href="#d5">大阪城・海遊館 →</a></div>
+  </div>
+  <div class="stayline">今晚住 <b>KOKO HOTEL 大阪難波千日前</b></div>
+  <ol class="tl">
+    <li class="mv"><time>08:00</time><span class="rail"></span><div class="body"><p><span class="mode">近鐵</span>從「大阪難波」到「近鐵奈良」，約 40 分鐘。週日人多，早點出門。</p></div></li>
+    <li><time>09:00</time><span class="rail"></span><div class="body"><h4>奈良公園</h4><p>鹿仙貝約 ¥200。鹿會頂人、咬紙袋，購物袋要收好。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=奈良公園" target="_blank" rel="noopener">地圖</a></div></li>
+    <li><time>10:00</time><span class="rail"></span><div class="body"><h4>東大寺</h4><p>南大門金剛力士像、大佛殿。順路去二月堂看奈良市景，免費。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=東大寺 大仏殿" target="_blank" rel="noopener">地圖</a></div></li>
+    <li><time>11:15</time><span class="rail"></span><div class="body"><h4>春日大社 <span class="tag flex">彈性</span></h4><p>參道上有上千座石燈籠。</p></div></li>
+    <li><time>12:00</time><span class="rail"></span><div class="body"><h4>午餐：奈良町、東向商店街</h4><p>柿葉壽司、中谷堂（高速搗麻糬）、釜飯。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=中谷堂 奈良" target="_blank" rel="noopener">地圖</a></div></li>
+    <li class="mv"><time>13:00</time><span class="rail"></span><div class="body"><p><span class="mode">近鐵</span>回「大阪難波」。</p></div></li>
+    <li><time>14:00</time><span class="rail"></span><div class="body"><h4>心齋橋筋商店街、美國村</h4><p>藥妝、服飾、大丸百貨。美國村有古著和潮牌。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=心斎橋筋商店街" target="_blank" rel="noopener">地圖</a></div></li>
+    <li><time>16:30</time><span class="rail"></span><div class="body"><h4>回飯店休息</h4></div></li>
+    <li><time>18:00</time><span class="rail"></span><div class="body"><h4>晚上二選一 <span class="tag flex">彈性</span></h4><p><b>梅田：</b>梅田藍天大廈空中庭園看夜景，晚餐在梅田地下街。<br><b>新世界：</b>通天閣、串炸。第 5 天晚上也排了新世界，今晚選梅田比較不重複。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=梅田スカイビル 空中庭園展望台" target="_blank" rel="noopener">地圖</a></div></li>
+  </ol>
+</section>
+
+<!-- D5 -->
+<section id="d5" class="day osaka">
+  <div class="sign">
+    <div class="top"><span class="num">DAY 5</span><span>11/9（一）</span></div>
+    <h2>大阪城・海遊館・阿倍野</h2>
+    <div class="roma">OSAKA CASTLE ・ KAIYUKAN ・ ABENO</div>
+    <div class="bar"><a href="#d4">← 奈良・心齋橋</a><a href="#d6">黑門市場・回台 →</a></div>
+  </div>
+  <div class="stayline">今晚住 <b>KOKO HOTEL 大阪難波千日前</b></div>
+  <ol class="tl">
+    <li class="mv"><time>08:15</time><span class="rail"></span><div class="body"><p><span class="mode">地鐵</span>御堂筋線到「本町」，轉中央線到「谷町四丁目」，約 20 分鐘。</p></div></li>
+    <li><time>08:45</time><span class="rail"></span><div class="body"><h4>大阪城公園、天守閣 <span class="tag flex">彈性</span></h4><p>天守閣 9:00 開門。從大手門進去，經過櫻門到天守閣，頂樓可以看大阪市景。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=大阪城天守閣" target="_blank" rel="noopener">地圖</a></div></li>
+    <li class="mv"><time>10:40</time><span class="rail"></span><div class="body"><p><span class="mode">地鐵</span>中央線從「谷町四丁目」直達「大阪港」，約 20 分鐘，再走 5–10 分鐘。</p></div></li>
+    <li class="fixed"><time>11:30</time><span class="rail"></span><div class="body"><h4>海遊館 <span class="tag booked">已預訂</span></h4><p><b>11:30 開始入場，提早 10–15 分鐘排隊。</b>先搭電扶梯到最上層，再沿螺旋坡道往下逛。重點是「太平洋」大水槽的鯨鯊，餵食時間貼在入口。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=海遊館" target="_blank" rel="noopener">地圖</a></div></li>
+    <li><time>14:00</time><span class="rail"></span><div class="body"><h4>午餐：天保山 Market Place</h4><p>2F「浪花美食橫丁」，昭和復古風美食街，可以吃章魚燒、蛋包飯、串炸。</p></div></li>
+    <li><time>15:00</time><span class="rail"></span><div class="body"><h4>天保山大摩天輪 <span class="tag flex">彈性</span></h4><p>繞一圈約 15 分鐘，有全透明的車廂可選。</p></div></li>
+    <li class="mv"><time>15:45</time><span class="rail"></span><div class="body"><p><span class="mode">地鐵</span>中央線到「本町」，轉御堂筋線到「天王寺」，約 35 分鐘。</p></div></li>
+    <li><time>16:30</time><span class="rail"></span><div class="body"><h4>阿倍野 HARUKAS 300 展望台 <span class="tag flex">彈性</span></h4><p>大約 17:00 日落，可以一次看到夕陽和夜景。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=ハルカス300" target="_blank" rel="noopener">地圖</a></div></li>
+    <li><time>18:00</time><span class="rail"></span><div class="body"><h4>晚餐：新世界</h4><p>從天王寺走過去約 15 分鐘。通天閣、串炸（醬汁不可沾兩次）。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=通天閣" target="_blank" rel="noopener">地圖</a></div></li>
+    <li class="mv"><time>20:00</time><span class="rail"></span><div class="body"><p><span class="mode">地鐵</span>從「動物園前」搭御堂筋線回難波，約 5 分鐘。</p></div></li>
+  </ol>
+  <div class="notes">
+    <div class="note"><b>想睡晚一點：</b>跳過大阪城，早上去黑門市場吃早午餐（從飯店走約 10 分鐘），10:30 再出發到海遊館。這樣第 6 天早上就改逛難波。</div>
+  </div>
+</section>
+
+<!-- D6 -->
+<section id="d6" class="day osaka">
+  <div class="sign">
+    <div class="top"><span class="num">DAY 6</span><span>11/10（二）</span></div>
+    <h2>黑門市場・回台</h2>
+    <div class="roma">KUROMON ・ KANSAI AIRPORT</div>
+    <div class="bar"><a href="#d5">← 大阪城・海遊館</a><a href="#info">行前資訊 →</a></div>
+  </div>
+  <div class="stayline">KOKO HOTEL 退房</div>
+  <ol class="tl">
+    <li><time>08:00</time><span class="rail"></span><div class="body"><h4>黑門市場早餐</h4><p>從飯店走約 10 分鐘。海鮮燒、和牛串、水果。部分店 9 點才開。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=黒門市場" target="_blank" rel="noopener">地圖</a></div></li>
+    <li><time>09:30</time><span class="rail"></span><div class="body"><h4>難波最後採買 <span class="tag flex">彈性</span></h4><p>高島屋、唐吉訶德（24 小時營業）。</p></div></li>
+    <li><time>10:45</time><span class="rail"></span><div class="body"><h4>KOKO HOTEL 退房</h4></div></li>
+    <li class="mv"><time>11:15</time><span class="rail"></span><div class="body"><p><span class="mode">南海</span>從「難波」到關西機場。特急 rapi:t 約 40 分鐘（全車對號座），或空港急行約 45 分鐘。</p></div></li>
+    <li><time>12:00</time><span class="rail"></span><div class="body"><h4>抵達關西機場</h4><p>起飛前 3 小時到。報到、托運、退稅確認、出境。</p></div></li>
+    <li class="fixed"><time>15:10</time><span class="rail"></span><div class="body"><h4>JX823 起飛 <span class="tag booked">已預訂</span></h4></div></li>
+    <li class="fixed"><time>17:05</time><span class="rail"></span><div class="body"><h4>抵達桃園</h4><p>台灣時間。</p></div></li>
+  </ol>
+  <div class="notes">
+    <div class="note warn"><b>退稅：</b>2026/11/1 起日本改為「退稅制」，買東西時先付含稅價，出境時經海關確認後才退款。退稅商品不要拆封，托運前先讓海關確認。</div>
+  </div>
+</section>
+
+<!-- Info -->
+<section id="info">
+  <h2 class="sec-title">行前資訊</h2>
+  <div class="info">
+    <div class="card">
+      <h3>出發前待辦</h3>
+      <ul class="check">
+        <li><input type="checkbox" id="c1"><label for="c1">Visit Japan Web：完成入境審查和海關申報，截圖 QR Code</label></li>
+        <li><input type="checkbox" id="c2"><label for="c2">KKday 一日團：填好「行程資料」，備註要帶行李箱</label></li>
+        <li><input type="checkbox" id="c3"><label for="c3">手機加入 ICOCA 或 Suica（錢包 App）</label></li>
+        <li><input type="checkbox" id="c4"><label for="c4">準備 eSIM 或 Wi-Fi 分享器</label></li>
+        <li><input type="checkbox" id="c5"><label for="c5">用電子機票確認 JX820、JX823 的時間</label></li>
+        <li><input type="checkbox" id="c6"><label for="c6">想搭嵯峨野小火車的話，先上網預約</label></li>
+        <li><input type="checkbox" id="c7"><label for="c7">準備少量日圓現金（寺廟門票、小店）</label></li>
+      </ul>
+      <p class="fine">勾選只會存在你自己的手機上。</p>
+    </div>
+    <div class="card">
+      <h3>交通票券</h3>
+      <ul class="list">
+        <li><b>關西機場到京都：</b>入境後在 JR 售票處買「ICOCA &amp; HARUKA」優惠套票。</li>
+        <li><b>其他路段：</b>直接刷 ICOCA 或 Suica，公車、地鐵、近鐵、阪急、京阪、南海都能用。</li>
+        <li><b>不用買 JR 周遊券：</b>天橋立交通由一日團負責，其他路段直接刷卡比較便宜。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>天氣與穿著</h3>
+      <p>11 月初京阪白天約 18–20°C，早晚約 10°C。洋蔥式穿法，帶一件薄外套。天橋立、伊根靠海，風比較大。楓葉一般 11 月中下旬才是高峰，這時候大概剛開始轉色。</p>
+    </div>
+    <div class="card">
+      <h3>緊急聯絡</h3>
+      <ul class="list">
+        <li>報警 <span class="mono">110</span> ・ 救護車、消防 <span class="mono">119</span></li>
+        <li>日本觀光局 24 小時旅客熱線（有中文）<br><span class="mono">050-3816-2787</span></li>
+        <li>台北駐大阪經濟文化辦事處：電話請出發前到<a href="https://www.roc-taiwan.org/jposa/" target="_blank" rel="noopener">辦事處官網</a>確認</li>
+        <li>京都飯店 <span class="mono">+81-75-662-5489</span></li>
+        <li>大阪飯店 <span class="mono">+81-6-6211-1001</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="wrap">票價、開放時間和班表以各官方網站為準。標「彈性」的項目可以依當天體力調整。</footer>
+
+<script>
+(function () {
+  var panels = Array.prototype.slice.call(document.querySelectorAll("main > section"));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll("nav.days a"));
+  var nav = document.querySelector("nav.days");
+
+  function tabFor(id) {
+    return tabs.filter(function (t) { return t.getAttribute("href") === "#" + id; })[0];
+  }
+
+  // 每個分頁底部加上一頁、下一頁，滑到底也能直接換天
+  panels.forEach(function (panel, i) {
+    var pager = document.createElement("div");
+    pager.className = "pager";
+    [[i - 1, "prev", "← 上一頁"], [i + 1, "next", "下一頁 →"]].forEach(function (p) {
+      var target = panels[p[0]];
+      if (!target) return;
+      var t = tabFor(target.id);
+      var a = document.createElement("a");
+      a.href = "#" + target.id;
+      a.className = p[1];
+      a.innerHTML = "<small>" + p[2] + "</small><b></b>";
+      a.querySelector("b").textContent = t ? t.textContent : target.id;
+      pager.appendChild(a);
+    });
+    panel.appendChild(pager);
+  });
+
+  // 一次只顯示一個分頁
+  function show(id, scroll) {
+    var found = panels.some(function (p) { return p.id === id; });
+    if (!found) id = panels[0].id;
+    panels.forEach(function (p) { p.hidden = p.id !== id; });
+    tabs.forEach(function (t) {
+      if (t.getAttribute("href") === "#" + id) {
+        t.setAttribute("aria-current", "page");
+        t.scrollIntoView({ block: "nearest", inline: "center" });
+      } else {
+        t.removeAttribute("aria-current");
+      }
+    });
+    // 換頁後回到內容開頭，但不把封面捲回來
+    var hero = document.querySelector("header.hero");
+    var navTop = hero.offsetTop + hero.offsetHeight;
+    if (scroll && window.scrollY > navTop) window.scrollTo({ top: navTop });
+  }
+
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="#"]');
+    if (!a) return;
+    var id = a.getAttribute("href").slice(1);
+    if (!panels.some(function (p) { return p.id === id; })) return;
+    e.preventDefault();
+    show(id, true);
+    try { history.replaceState(null, "", "#" + id); } catch (err) {}
+  });
+
+  // 旅行期間打開時，直接顯示當天；其他時候看網址的 #，沒有就顯示總覽
+  var d = new Date();
+  var today = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  var todayTab = document.querySelector('nav.days a[data-date="' + today + '"]');
+  if (todayTab) todayTab.classList.add("today");
+  var start = location.hash.slice(1) || (todayTab ? todayTab.getAttribute("href").slice(1) : "overview");
+  show(start, false);
+
+  // 待辦勾選只存在各自的瀏覽器
+  document.querySelectorAll("ul.check input").forEach(function (box) {
+    try { box.checked = localStorage.getItem("chk-" + box.id) === "1"; } catch (e) {}
+    box.addEventListener("change", function () {
+      try { localStorage.setItem("chk-" + box.id, box.checked ? "1" : "0"); } catch (e) {}
+    });
+  });
+})();
+</script>
+
+</html>
