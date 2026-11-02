@@ -317,6 +317,29 @@ ol.tl li.now .rail::after { background: var(--day); box-shadow: 0 0 0 5px color-
 .wxgrid .t { font-family: var(--font-num); font-size: 15px; font-weight: 600; }
 .wxgrid .r { font-family: var(--font-num); font-size: 13px; color: var(--sea); }
 
+/* 每小時降雨機率 */
+.wxmore {
+  font: inherit; font-size: 13px; color: var(--ink); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 4px; padding: 2px 10px; cursor: pointer;
+}
+.wxmore::after { content: " ▾"; font-size: 10px; }
+.wxmore[aria-expanded="true"]::after { content: " ▴"; }
+.hourly { flex-basis: 100%; min-width: 0; margin-top: 4px; }
+.hloc + .hloc { margin-top: 12px; }
+.hname { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+.hname b { color: var(--ink); }
+.hscroll { overflow-x: auto; padding-bottom: 4px; }
+.hgrid { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(28px, 1fr); gap: 2px; min-width: 520px; }
+.hc { display: grid; justify-items: center; gap: 3px; font-family: var(--font-num); }
+.hp { font-size: 11px; color: var(--muted); }
+.hc.wet .hp { color: var(--sea); font-weight: 600; }
+.hb { width: 12px; height: 44px; background: var(--line); border-radius: 2px; display: flex; align-items: flex-end; overflow: hidden; }
+.hb i { display: block; width: 100%; background: var(--sea); }
+.ht { font-size: 13px; font-weight: 600; }
+.hh { font-size: 11px; color: var(--muted); }
+.hsrc { margin: 8px 0 0; font-size: 12px; color: var(--muted); }
+.hsrc a { color: var(--ink); text-underline-offset: 3px; }
+
 @media (max-width: 480px) {
   .wxgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .wxgrid a:nth-child(4) { border-left: 0; }
@@ -807,7 +830,9 @@ ol.tl li.now .rail::after { background: var(--day); box-shadow: 0 0 0 5px color-
   };
   var DAYLOC = { d1: ["kyoto"], d2: ["kyoto"], d3: ["miyazu", "osaka"], d4: ["nara", "osaka"], d5: ["osaka"], d6: ["osaka"] };
   var KEYS = Object.keys(LOC);
-  var CACHE = "wx-v1";
+  var CACHE = "wx-v2";
+  // 日本氣象廳各府縣的官方預報頁
+  var JMA = { kyoto: ["京都府", "260000"], miyazu: ["京都府", "260000"], nara: ["奈良縣", "290000"], osaka: ["大阪府", "270000"] };
 
   function wmo(c) {
     if (c === 0) return "晴";
@@ -836,9 +861,29 @@ ol.tl li.now .rail::after { background: var(--day); box-shadow: 0 0 0 5px color-
       by[k] = {};
       if (!dl) return;
       dl.time.forEach(function (day, j) {
-        by[k][day] = { c: dl.weather_code[j], hi: dl.temperature_2m_max[j], lo: dl.temperature_2m_min[j], p: dl.precipitation_probability_max[j] };
+        by[k][day] = { c: dl.weather_code[j], hi: dl.temperature_2m_max[j], lo: dl.temperature_2m_min[j], p: dl.precipitation_probability_max[j], h: [] };
+      });
+      var hr = data[i].hourly;
+      if (!hr) return;
+      hr.time.forEach(function (ts, j) {
+        var d = by[k][ts.slice(0, 10)], h = +ts.slice(11, 13);
+        if (d && h >= 6) d.h.push({ h: h, p: hr.precipitation_probability[j], t: hr.temperature_2m[j] });
       });
     });
+
+    // 早上 6 點到晚上 11 點，每小時一欄
+    function hourly(k, date) {
+      var w = by[k][date];
+      if (!w || !w.h.length) return "";
+      var cols = w.h.map(function (x) {
+        var p = x.p == null ? null : x.p;
+        return '<div class="hc' + (p != null && p >= 50 ? " wet" : "") + '"><span class="hp">' + (p == null ? "—" : p + "%") +
+          '</span><span class="hb"><i style="height:' + (p || 0) + '%"></i></span><span class="ht">' +
+          (x.t == null ? "—" : Math.round(x.t) + "°") + '</span><span class="hh">' + x.h + "</span></div>";
+      }).join("");
+      return '<div class="hloc"><div class="hname"><b>' + LOC[k][0] + "</b> 每小時降雨機率、氣溫</div>" +
+        '<div class="hscroll"><div class="hgrid">' + cols + "</div></div></div>";
+    }
 
     var cells = "";
     IDS.forEach(function (id) {
@@ -859,13 +904,24 @@ ol.tl li.now .rail::after { background: var(--day); box-shadow: 0 0 0 5px color-
       }).join("");
       if (!parts) { box.hidden = true; return; }
       var tip = wet ? "。降雨機率高，記得帶傘" + (id === "d2" ? "，嵐山可以改走雨天備案" : "") : "";
-      box.innerHTML = parts + '<span class="src">天氣預報：Open-Meteo，更新於 ' + stamp(at) + tip + "</span>";
+      var hours = DAYLOC[id].map(function (k) { return hourly(k, date); }).join("");
+      var open = box.dataset.open === "1";
+      var jma = [];
+      DAYLOC[id].forEach(function (k) {
+        var link = '<a href="https://www.jma.go.jp/bosai/forecast/#area_type=offices&area_code=' + JMA[k][1] + '" target="_blank" rel="noopener">' + JMA[k][0] + "</a>";
+        if (jma.indexOf(link) < 0) jma.push(link);
+      });
+      box.innerHTML = parts +
+        (hours ? '<button type="button" class="wxmore" aria-expanded="' + open + '">每小時降雨機率</button>' : "") +
+        '<span class="src">天氣預報：Open-Meteo，更新於 ' + stamp(at) + tip + "</span>" +
+        '<div class="hourly"' + (open && hours ? "" : " hidden") + ">" + hours +
+        '<p class="hsrc">官方預報：日本氣象廳 ' + jma.join("、") + "</p></div>";
       box.hidden = false;
 
       var main = by[DAYLOC[id][0]][date];
       if (main) {
         var cls = (document.querySelector('nav.days a[href="#' + id + '"]').className || "").replace("today", "").trim();
-        cells += '<a href="#' + id + '" class="' + cls + '"><span class="d">' + id.toUpperCase() + " " + (+date.slice(5, 7)) + "/" + (+date.slice(8)) +
+        cells += '<a href="#' + id + '" data-wx="' + id + '" class="' + cls + '"><span class="d">' + id.toUpperCase() + " " + (+date.slice(5, 7)) + "/" + (+date.slice(8)) +
           '</span><span class="c">' + wmo(main.c) + '</span><span class="t">' + Math.round(main.hi) + "°/" + Math.round(main.lo) + "°</span>" +
           (main.p != null ? '<span class="r">降雨 ' + main.p + "%</span>" : "") + "</a>";
       }
@@ -878,9 +934,33 @@ ol.tl li.now .rail::after { background: var(--day); box-shadow: 0 0 0 5px color-
       strip.className = "wxstrip";
       document.querySelector("#overview .fine").after(strip);
     }
-    strip.innerHTML = "<h3>天氣預報</h3><div class=\"wxgrid\">" + cells + '</div><p class="fine">每天的主要城市，點一下看當天行程。更新於 ' + stamp(at) + "</p>";
+    strip.innerHTML = "<h3>天氣預報</h3><div class=\"wxgrid\">" + cells + '</div><p class="fine">每天的主要城市。點一下看當天每小時的降雨機率。更新於 ' + stamp(at) + "</p>";
     strip.hidden = false;
   }
+
+  function setOpen(box, open) {
+    box.dataset.open = open ? "1" : "";
+    var btn = box.querySelector(".wxmore"), panel = box.querySelector(".hourly");
+    if (btn) btn.setAttribute("aria-expanded", open);
+    if (panel) panel.hidden = !open;
+  }
+
+  document.addEventListener("click", function (e) {
+    var btn = e.target.closest && e.target.closest(".wxmore");
+    if (btn) {
+      var box = btn.closest(".wx");
+      setOpen(box, box.dataset.open !== "1");
+      return;
+    }
+    // 總覽的天氣格：切到那一天後直接展開每小時預報
+    var cell = e.target.closest && e.target.closest("a[data-wx]");
+    if (cell) {
+      var target = document.querySelector("#" + cell.dataset.wx + " .wx");
+      if (!target) return;
+      setOpen(target, true);
+      setTimeout(function () { target.scrollIntoView({ block: "start" }); window.scrollBy(0, -70); }, 0);
+    }
+  });
 
   try {
     var cached = JSON.parse(localStorage.getItem(CACHE) || "null");
@@ -890,7 +970,8 @@ ol.tl li.now .rail::after { background: var(--day); box-shadow: 0 0 0 5px color-
   if (Date.now() < toTs(DAYS.d6, 23, 59)) {
     var url = "https://api.open-meteo.com/v1/forecast?latitude=" + KEYS.map(function (k) { return LOC[k][1]; }).join(",") +
       "&longitude=" + KEYS.map(function (k) { return LOC[k][2]; }).join(",") +
-      "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTokyo&forecast_days=16";
+      "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max" +
+      "&hourly=temperature_2m,precipitation_probability&timezone=Asia%2FTokyo&forecast_days=16";
     fetch(url).then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); }).then(function (json) {
       var data = Array.isArray(json) ? json : [json];
       var t = Date.now();
