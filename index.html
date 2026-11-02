@@ -254,6 +254,64 @@ footer { color: var(--muted); font-size: 12px; padding-block: 0 40px; }
   .pass .stub { padding: 12px; }
   .pass .iata { font-size: 22px; }
 }
+/* ---------- 餐廳口袋名單 ---------- */
+.food { padding: 4px 18px 18px; }
+.food h3 { font-size: 13px; color: var(--day); margin: 0 0 8px; letter-spacing: .06em; }
+.food ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.food li { background: var(--soft); border-radius: 8px; padding: 10px 12px; min-width: 0; }
+.food .n { display: flex; flex-wrap: wrap; gap: 2px 8px; align-items: baseline; }
+.food .n b { font-size: 15px; }
+.food .n .when { font-size: 12px; font-weight: 700; color: var(--day); }
+.food .n .what { font-size: 13px; color: var(--muted); }
+.food p { margin: 2px 0 0; font-size: 13px; color: var(--muted); }
+.food p.hrs { color: var(--ink); }
+.food p.alert { color: var(--warn); }
+.food .fine { margin-top: 8px; font-size: 12px; }
+
+/* ---------- 現在、下一站 ---------- */
+.live {
+  margin: 14px 18px 0; padding: 10px 12px; border-radius: 10px;
+  border: 2px solid var(--day, var(--ink)); background: var(--soft);
+  display: grid; gap: 4px; font-size: 14px;
+}
+.live .row { display: flex; gap: 8px; align-items: baseline; min-width: 0; }
+.live .k { flex: 0 0 auto; font-size: 12px; font-weight: 700; color: var(--day, var(--ink)); min-width: 3.2em; }
+.live .v { min-width: 0; }
+.live .cd { font-family: var(--font-mono); font-weight: 600; color: var(--day, var(--ink)); white-space: nowrap; }
+.countdown { margin-top: 12px; font-size: 14px; color: var(--muted); }
+.countdown b { font-family: var(--font-mono); font-size: 22px; color: var(--osaka); margin: 0 2px; }
+ol.tl li.past > time, ol.tl li.past > .body { opacity: .5; }
+ol.tl li.now .rail::after { background: var(--day); box-shadow: 0 0 0 5px color-mix(in srgb, var(--day) 25%, transparent); }
+.tag.nowtag { background: var(--day); color: var(--surface); margin-left: 6px; }
+
+/* ---------- 天氣 ---------- */
+.wx { margin: 12px 18px 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.wx .w {
+  display: inline-flex; gap: 8px; align-items: baseline; flex-wrap: wrap;
+  font-size: 13px; padding: 6px 10px; border-radius: 8px; background: var(--soft); border: 1px solid var(--line);
+}
+.wx .w b { font-weight: 700; }
+.wx .w .t { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.wx .w .rain { color: var(--sea); font-family: var(--font-mono); }
+.wx .w.wet { border-color: var(--sea); }
+.wx .src { flex-basis: 100%; font-size: 11px; color: var(--muted); }
+.wxstrip { margin-top: 14px; }
+.wxstrip h3 { font-size: 15px; margin: 0 0 8px; }
+.wxgrid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; }
+.wxgrid a {
+  text-decoration: none; text-align: center; background: var(--surface); border: 1px solid var(--line);
+  border-top: 3px solid var(--day); border-radius: 10px; padding: 8px 4px; display: grid; gap: 2px; min-width: 0;
+}
+.wxgrid .d { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.wxgrid .c { font-size: 14px; font-weight: 700; }
+.wxgrid .t { font-family: var(--font-mono); font-size: 12px; }
+.wxgrid .r { font-family: var(--font-mono); font-size: 11px; color: var(--sea); }
+@media (max-width: 480px) {
+  .wxgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .live, .wx { margin-left: 14px; margin-right: 14px; }
+  .food { padding-left: 14px; padding-right: 14px; }
+}
+
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 </style>
 
@@ -344,8 +402,8 @@ footer { color: var(--muted); font-size: 12px; padding-block: 0 40px; }
   </div>
   <div class="stayline">今晚住 <b>VIA INN 京都站八條口</b></div>
   <ol class="tl">
-    <li><time>05:30</time><span class="rail"></span><div class="body"><h4>桃園機場第一航廈報到</h4><p>起飛前 3 小時到，報到、托運、出境。</p></div></li>
-    <li class="fixed"><time>08:30</time><span class="rail"></span><div class="body"><h4>JX820 起飛 <span class="tag booked">已預訂</span></h4></div></li>
+    <li data-tz="tw"><time>05:30</time><span class="rail"></span><div class="body"><h4>桃園機場第一航廈報到</h4><p>起飛前 3 小時到，報到、托運、出境。</p></div></li>
+    <li class="fixed" data-tz="tw"><time>08:30</time><span class="rail"></span><div class="body"><h4>JX820 起飛 <span class="tag booked">已預訂</span></h4></div></li>
     <li class="fixed"><time>12:10</time><span class="rail"></span><div class="body"><h4>抵達關西機場</h4><p>入境時出示 Visit Japan Web 的 QR Code，領完行李約 40–60 分鐘。到 JR 售票處買「ICOCA &amp; HARUKA」優惠套票。</p></div></li>
     <li class="mv"><time>13:15</time><span class="rail"></span><div class="body"><p><span class="mode">JR</span>特急 HARUKA 到京都，約 80 分鐘。午餐在機場買，或在車上吃鐵路便當。</p></div></li>
     <li><time>14:45</time><span class="rail"></span><div class="body"><h4>VIA INN 京都站八條口</h4><p>從京都站八條口出站，走幾分鐘就到。先辦入住或寄放行李。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=ヴィアイン プライム 京都駅八条口" target="_blank" rel="noopener">地圖</a></div></li>
@@ -356,6 +414,16 @@ footer { color: var(--muted); font-size: 12px; padding-block: 0 40px; }
     <li><time>19:00</time><span class="rail"></span><div class="body"><h4>晚餐：先斗町或祇園 <span class="tag flex">彈性</span></h4><p>先斗町窄巷餐廳、鴨川邊。太累的話，改回京都站大樓 10F 的拉麵小路。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=先斗町" target="_blank" rel="noopener">地圖</a></div></li>
     <li class="mv"><time>20:30</time><span class="rail"></span><div class="body"><p><span class="mode">京阪</span>從祇園四條搭京阪電車，或搭公車回京都站。</p></div></li>
   </ol>
+  <div class="food">
+    <h3>吃什麼</h3>
+    <ul>
+      <li><div class="n"><span class="when">晚餐</span><b>いづう</b><span class="what">祇園 ・ 鯖壽司老舖</span></div><p>鯖姿寿司，約 ¥2,000–3,000</p><p class="hrs">11:00–22:00 ・ 週二休 ・ 內用不收預約</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=いづう 祇園" target="_blank" rel="noopener">地圖</a></li>
+      <li><div class="n"><span class="when">晚餐</span><b>新福菜館 本店</b><span class="what">京都站附近 ・ 黑醬油拉麵</span></div><p>中華そば＋炒飯，約 ¥1,000–2,000</p><p class="hrs">9:00–20:00（最後點餐 19:30）・ 週三休 ・ 常排隊</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=新福菜館 本店" target="_blank" rel="noopener">地圖</a></li>
+      <li><div class="n"><span class="when">晚餐備案</span><b>京都拉麺小路</b><span class="what">京都車站大樓 10F</span></div><p>各地拉麵任選，約 ¥1,000–1,500</p><p class="hrs">11:00–22:00（最後點餐 21:30）</p></li>
+      <li><div class="n"><span class="when">甜點</span><b>鍵善良房 四条本店</b><span class="what">祇園 ・ 葛切</span></div><p>くずきり，約 ¥1,400</p><p class="hrs">喫茶 10:00–18:00（最後點餐 17:30）・ 週一休</p><p class="alert">最後點餐 17:30，從清水寺下來可能趕不上，趕不上就跳過。</p></li>
+    </ul>
+    <p class="fine">清水寺附近的湯豆腐老店「奥丹清水」週四公休，這天去不了。</p>
+  </div>
 </section>
 
 <!-- D2 -->
@@ -386,6 +454,17 @@ footer { color: var(--muted); font-size: 12px; padding-block: 0 40px; }
     <div class="note warn"><b>今晚要做：</b>確認一日團能不能帶行李箱。業者回覆不行的話，請飯店櫃台把大行李宅配到 KOKO HOTEL，當晚的換洗衣物另外裝一個小包。</div>
     <div class="note"><b>雨天備案：</b>嵐山改去三十三間堂或京都國立博物館（室內）。錦市場和新京極有遮雨棚。</div>
   </div>
+  <div class="food">
+    <h3>吃什麼</h3>
+    <ul>
+      <li><div class="n"><span class="when">午餐</span><b>嵐山よしむら</b><span class="what">渡月橋旁 ・ 蕎麥麵</span></div><p>蕎麥麵套餐，看得到渡月橋，約 ¥2,000</p><p class="hrs">平日 11:00–16:00 ・ 全年無休 ・ 11:00 前到比較不用排</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=嵐山よしむら" target="_blank" rel="noopener">地圖</a></li>
+      <li><div class="n"><span class="when">午餐</span><b>湯豆腐 嵯峨野</b><span class="what">嵐山 ・ 湯豆腐</span></div><p>湯豆腐套餐，約 ¥4,400</p><p class="hrs">11:00–17:30（最後點餐 16:30）・ 不定休，前一天打 075-871-6946 確認</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=湯豆腐 嵯峨野" target="_blank" rel="noopener">地圖</a></li>
+      <li><div class="n"><span class="when">點心</span><b>eX cafe 京都嵐山本店</b><span class="what">嵐山 ・ 甜點</span></div><p>七輪自烤丸子套餐，約 ¥1,000–2,000</p><p class="hrs">9:00–18:00 ・ 不定休</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=eX cafe 京都嵐山本店" target="_blank" rel="noopener">地圖</a></li>
+      <li><div class="n"><span class="when">錦市場</span><b>三木鶏卵</b><span class="what">高湯玉子燒</span></div><p>だし巻，數百日圓，外帶</p><p class="hrs">約 9:00–17:00</p></li>
+      <li><div class="n"><span class="when">錦市場</span><b>こんなもんじゃ</b><span class="what">豆乳甜甜圈</span></div><p>豆乳ドーナツ，數百日圓</p><p class="hrs">10:00–18:00 ・ 不定休</p></li>
+      <li><div class="n"><span class="when">晚餐</span><b>新福菜館 本店</b> 或 <b>京都拉麺小路</b><span class="what">京都站</span></div><p class="hrs">新福菜館最後點餐 19:30，伏見稻荷回來晚了就去拉麵小路（營業到 22:00）。</p></li>
+    </ul>
+  </div>
 </section>
 
 <!-- D3 -->
@@ -410,6 +489,18 @@ footer { color: var(--muted); font-size: 12px; padding-block: 0 40px; }
   <div class="notes">
     <div class="note"><b>行李：</b>每人限帶一件 28–29 吋以內的行李箱，要先在 KKday 的「填寫行程資料」備註。</div>
   </div>
+  <div class="food">
+    <h3>吃什麼</h3>
+    <ul>
+      <li><div class="n"><span class="when">天橋立午餐</span><b>レストラン文珠</b><span class="what">天橋立入口 ・ 海鮮丼</span></div><p>海鮮丼，約 ¥1,450–2,000</p><p class="hrs">10:30–15:30 ・ 週四休</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=レストラン文珠 宮津" target="_blank" rel="noopener">地圖</a></li>
+      <li><div class="n"><span class="when">天橋立點心</span><b>勘七茶屋</b> 或 <b>吉野茶屋</b><span class="what">智恩寺前 ・ 智恵の餅</span></div><p>智恵の餅 3 個約 ¥450</p><p class="hrs">勘七 9:00–17:00，賣完提早收 ・ 吉野 9:30–18:30</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=勘七茶屋 天橋立" target="_blank" rel="noopener">地圖</a></li>
+      <li><div class="n"><span class="when">伊根咖啡</span><b>INE CAFE</b><span class="what">舟屋日和 ・ 海景咖啡</span></div><p>咖啡＋甜點或海鮮輕食，約 ¥1,000–2,000</p><p class="hrs">10:30–16:30 ・ 週二、三休</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=INE CAFE 舟屋日和" target="_blank" rel="noopener">地圖</a></li>
+      <li><div class="n"><span class="when">晚餐</span><b>お好み焼 美津の</b><span class="what">道頓堀 ・ 大阪燒百名店</span></div><p>美津の焼，約 ¥2,000 起</p><p class="hrs">11:00–22:00（最後點餐 21:00）・ 不收預約</p><p class="alert">晚餐排隊常要 30–60 分鐘以上，19:45 才到可能來不及。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=お好み焼 美津の" target="_blank" rel="noopener">地圖</a></li>
+      <li><div class="n"><span class="when">晚餐備案</span><b>千房 道頓堀ビル店</b><span class="what">道頓堀 ・ 大阪燒</span></div><p>道頓堀焼，約 ¥1,500–2,000</p><p class="hrs">11:00–23:00 ・ 可預約，適合當美津の的備案</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=千房 道頓堀ビル店" target="_blank" rel="noopener">地圖</a></li>
+      <li><div class="n"><span class="when">宵夜</span><b>道頓堀くくる 本店</b><span class="what">章魚燒</span></div><p>びっくりたこ焼（本店限定），約 ¥1,000–2,000</p><p class="hrs">週六 10:00–21:00（最後點餐 20:30）</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=道頓堀くくる 本店" target="_blank" rel="noopener">地圖</a></li>
+      <li><div class="n"><span class="when">晚餐</span><b>串かつだるま 道頓堀店</b><span class="what">串炸</span></div><p>串カツ每串 ¥143 起，約 ¥2,000</p><p class="hrs">週六 10:30–22:30（最後點餐 22:00）・ 無休 ・ 晚上要排隊</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=串かつだるま 道頓堀店" target="_blank" rel="noopener">地圖</a></li>
+    </ul>
+  </div>
 </section>
 
 <!-- D4 -->
@@ -432,6 +523,16 @@ footer { color: var(--muted); font-size: 12px; padding-block: 0 40px; }
     <li><time>16:30</time><span class="rail"></span><div class="body"><h4>回飯店休息</h4></div></li>
     <li><time>18:00</time><span class="rail"></span><div class="body"><h4>晚上二選一 <span class="tag flex">彈性</span></h4><p><b>梅田：</b>梅田藍天大廈空中庭園看夜景，晚餐在梅田地下街。<br><b>新世界：</b>通天閣、串炸。第 5 天晚上也排了新世界，今晚選梅田比較不重複。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=梅田スカイビル 空中庭園展望台" target="_blank" rel="noopener">地圖</a></div></li>
   </ol>
+  <div class="food">
+    <h3>吃什麼</h3>
+    <ul>
+      <li><div class="n"><span class="when">奈良午餐</span><b>柿の葉ずし 平宗 奈良店</b><span class="what">柿葉壽司</span></div><p>柿葉壽司＋熱素麵套餐，約 ¥1,600–2,500</p><p class="hrs">10:00–21:00 ・ 週一休 ・ 可網路預約</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=柿の葉ずし 平宗 奈良店" target="_blank" rel="noopener">地圖</a></li>
+      <li><div class="n"><span class="when">奈良午餐</span><b>志津香 公園店</b><span class="what">釜飯</span></div><p>奈良七種釜めし，約 ¥1,500–2,500</p><p class="hrs">週日 11:00–16:00 ・ 週二休 ・ 不收預約</p><p class="alert">週日中午排很久，要吃的話東大寺逛完先去排。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=志津香 公園店" target="_blank" rel="noopener">地圖</a></li>
+      <li><div class="n"><span class="when">奈良點心</span><b>中谷堂</b><span class="what">高速搗麻糬</span></div><p>よもぎ餅，約 ¥200 起，外帶</p><p class="hrs">10:00–19:00 ・ 不定休</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=中谷堂 奈良" target="_blank" rel="noopener">地圖</a></li>
+      <li><div class="n"><span class="when">心齋橋</span><b>北極星 心斎橋本店</b><span class="what">蛋包飯創始店</span></div><p>チキンオムライス，約 ¥1,000–2,000</p><p class="hrs">11:30–21:30 ・ 無休 ・ 週末會排隊</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=北極星 心斎橋本店" target="_blank" rel="noopener">地圖</a></li>
+      <li><div class="n"><span class="when">梅田晚餐</span><b>お好み焼 きじ 梅田スカイビル店</b><span class="what">空中庭園大樓 B1</span></div><p>モダン焼，約 ¥1,500–2,500</p><p class="hrs">11:30–21:30 ・ 週四休 ・ 只收現金、22 席</p><p class="alert">新梅田食道街的「きじ 本店」週日公休，不要跑錯店。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=お好み焼 きじ 梅田スカイビル店" target="_blank" rel="noopener">地圖</a></li>
+    </ul>
+  </div>
 </section>
 
 <!-- D5 -->
@@ -448,7 +549,7 @@ footer { color: var(--muted); font-size: 12px; padding-block: 0 40px; }
     <li><time>08:45</time><span class="rail"></span><div class="body"><h4>大阪城公園、天守閣 <span class="tag flex">彈性</span></h4><p>天守閣 9:00 開門。從大手門進去，經過櫻門到天守閣，頂樓可以看大阪市景。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=大阪城天守閣" target="_blank" rel="noopener">地圖</a></div></li>
     <li class="mv"><time>10:40</time><span class="rail"></span><div class="body"><p><span class="mode">地鐵</span>中央線從「谷町四丁目」直達「大阪港」，約 20 分鐘，再走 5–10 分鐘。</p></div></li>
     <li class="fixed"><time>11:30</time><span class="rail"></span><div class="body"><h4>海遊館 <span class="tag booked">已預訂</span></h4><p><b>11:30 開始入場，提早 10–15 分鐘排隊。</b>先搭電扶梯到最上層，再沿螺旋坡道往下逛。重點是「太平洋」大水槽的鯨鯊，餵食時間貼在入口。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=海遊館" target="_blank" rel="noopener">地圖</a></div></li>
-    <li><time>14:00</time><span class="rail"></span><div class="body"><h4>午餐：天保山 Market Place</h4><p>2F「浪花美食橫丁」，昭和復古風美食街，可以吃章魚燒、蛋包飯、串炸。</p></div></li>
+    <li><time>14:00</time><span class="rail"></span><div class="body"><h4>午餐：天保山 Market Place</h4><p>就在海遊館隔壁。原本推薦的 2F「浪花美食橫丁」從 2026/9/29 起停業整修，預計 2027 年 3 月重新開幕，只能吃館內其他餐廳或美食街。</p><a class="maplink" href="https://www.kaiyukan.com/thv/marketplace/info.html" target="_blank" rel="noopener">營業日曆</a></div></li>
     <li><time>15:00</time><span class="rail"></span><div class="body"><h4>天保山大摩天輪 <span class="tag flex">彈性</span></h4><p>繞一圈約 15 分鐘，有全透明的車廂可選。</p></div></li>
     <li class="mv"><time>15:45</time><span class="rail"></span><div class="body"><p><span class="mode">地鐵</span>中央線到「本町」，轉御堂筋線到「天王寺」，約 35 分鐘。</p></div></li>
     <li><time>16:30</time><span class="rail"></span><div class="body"><h4>阿倍野 HARUKAS 300 展望台 <span class="tag flex">彈性</span></h4><p>大約 17:00 日落，可以一次看到夕陽和夜景。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=ハルカス300" target="_blank" rel="noopener">地圖</a></div></li>
@@ -456,7 +557,16 @@ footer { color: var(--muted); font-size: 12px; padding-block: 0 40px; }
     <li class="mv"><time>20:00</time><span class="rail"></span><div class="body"><p><span class="mode">地鐵</span>從「動物園前」搭御堂筋線回難波，約 5 分鐘。</p></div></li>
   </ol>
   <div class="notes">
-    <div class="note"><b>想睡晚一點：</b>跳過大阪城，早上去黑門市場吃早午餐（從飯店走約 10 分鐘），10:30 再出發到海遊館。這樣第 6 天早上就改逛難波。</div>
+    <div class="note"><b>想睡晚一點：</b>跳過大阪城，早上去黑門市場吃早午餐（從飯店走約 10 分鐘，大部分攤位 9:00 後才開），10:30 再出發到海遊館。這樣第 6 天早上就改逛難波。</div>
+  </div>
+  <div class="food">
+    <h3>吃什麼</h3>
+    <ul>
+      <li><div class="n"><span class="when">天保山午餐</span><b>串まる 天保山マーケットプレース店</b><span class="what">Market Place 內 ・ 串炸</span></div><p class="hrs">平日 11:00–16:00、17:00–21:00</p><p class="alert">資料年份不明，出發前看 Market Place 官網確認。</p></li>
+      <li><div class="n"><span class="when">新世界晚餐</span><b>串かつだるま 新世界総本店</b><span class="what">串炸元祖</span></div><p>串カツ＋どて焼き（味噌燉牛筋），約 ¥2,000</p><p class="hrs">11:00–22:30（最後點餐 22:00）・ 無休 ・ 座位少，常排隊</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=串かつだるま 新世界総本店" target="_blank" rel="noopener">地圖</a></li>
+      <li><div class="n"><span class="when">新世界晚餐</span><b>八重勝</b><span class="what">ジャンジャン横丁 ・ 串炸</span></div><p>串カツ＋土手焼，約 ¥2,000–3,000</p><p class="hrs">10:30–21:00 ・ 週四和每月第三個週三休 ・ 常排 30 分鐘以上</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=八重勝 新世界" target="_blank" rel="noopener">地圖</a></li>
+    </ul>
+    <p class="fine">新世界的河豚招牌老店「づぼらや」已在 2020 年歇業。</p>
   </div>
 </section>
 
@@ -470,16 +580,23 @@ footer { color: var(--muted); font-size: 12px; padding-block: 0 40px; }
   </div>
   <div class="stayline">KOKO HOTEL 退房</div>
   <ol class="tl">
-    <li><time>08:00</time><span class="rail"></span><div class="body"><h4>黑門市場早餐</h4><p>從飯店走約 10 分鐘。海鮮燒、和牛串、水果。部分店 9 點才開。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=黒門市場" target="_blank" rel="noopener">地圖</a></div></li>
-    <li><time>09:30</time><span class="rail"></span><div class="body"><h4>難波最後採買 <span class="tag flex">彈性</span></h4><p>高島屋、唐吉訶德（24 小時營業）。</p></div></li>
+    <li><time>08:00</time><span class="rail"></span><div class="body"><h4>打包、難波最後採買 <span class="tag flex">彈性</span></h4><p>唐吉訶德 24 小時營業，一早就能逛。黑門市場大部分攤位 9:00 後才開，不要太早去。</p></div></li>
+    <li><time>09:00</time><span class="rail"></span><div class="body"><h4>黑門市場早午餐</h4><p>從飯店走約 10 分鐘。鮪魚、海鮮丼、海鮮燒、和牛串、水果。</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=黒門市場" target="_blank" rel="noopener">地圖</a></div></li>
     <li><time>10:45</time><span class="rail"></span><div class="body"><h4>KOKO HOTEL 退房</h4></div></li>
     <li class="mv"><time>11:15</time><span class="rail"></span><div class="body"><p><span class="mode">南海</span>從「難波」到關西機場。特急 rapi:t 約 40 分鐘（全車對號座），或空港急行約 45 分鐘。</p></div></li>
     <li><time>12:00</time><span class="rail"></span><div class="body"><h4>抵達關西機場</h4><p>起飛前 3 小時到。報到、托運、退稅確認、出境。</p></div></li>
     <li class="fixed"><time>15:10</time><span class="rail"></span><div class="body"><h4>JX823 起飛 <span class="tag booked">已預訂</span></h4></div></li>
-    <li class="fixed"><time>17:05</time><span class="rail"></span><div class="body"><h4>抵達桃園</h4><p>台灣時間。</p></div></li>
+    <li class="fixed" data-tz="tw"><time>17:05</time><span class="rail"></span><div class="body"><h4>抵達桃園</h4><p>台灣時間。</p></div></li>
   </ol>
   <div class="notes">
     <div class="note warn"><b>退稅：</b>2026/11/1 起日本改為「退稅制」，買東西時先付含稅價，出境時經海關確認後才退款。退稅商品不要拆封，托運前先讓海關確認。</div>
+  </div>
+  <div class="food">
+    <h3>吃什麼</h3>
+    <ul>
+      <li><div class="n"><span class="when">黑門市場</span><b>まぐろや黒銀 黒門市場本店</b><span class="what">鮪魚</span></div><p>鮪魚丼或鮪魚生魚片，約 ¥2,000–4,000</p><p class="hrs">9:00–15:30 ・ 不定休</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=まぐろや黒銀 黒門市場本店" target="_blank" rel="noopener">地圖</a></li>
+      <li><div class="n"><span class="when">黑門市場</span><b>黒門三平 黒門市場店</b><span class="what">海鮮丼</span></div><p>當日海鮮丼，約 ¥1,500 起</p><p class="hrs">9:30–17:00 ・ 無休 ・ 熱門丼飯中午前常賣完</p><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=黒門三平 黒門市場店" target="_blank" rel="noopener">地圖</a></li>
+    </ul>
   </div>
 </section>
 
@@ -527,7 +644,7 @@ footer { color: var(--muted); font-size: 12px; padding-block: 0 40px; }
 
 </main>
 
-<footer class="wrap">票價、開放時間和班表以各官方網站為準。標「彈性」的項目可以依當天體力調整。</footer>
+<footer class="wrap">票價、開放時間和班表以各官方網站為準。標「彈性」的項目可以依當天體力調整。餐廳營業時間查自 2025–2026 年的網路資料，日本店家常臨時休息，出發前用 Google 地圖再確認一次。</footer>
 
 <script>
 (function () {
@@ -601,6 +718,191 @@ footer { color: var(--muted); font-size: 12px; padding-block: 0 40px; }
       try { localStorage.setItem("chk-" + box.id, box.checked ? "1" : "0"); } catch (e) {}
     });
   });
+})();
+</script>
+
+<script>
+(function () {
+  var DAYS = { d1: "2026-11-05", d2: "2026-11-06", d3: "2026-11-07", d4: "2026-11-08", d5: "2026-11-09", d6: "2026-11-10" };
+  var IDS = Object.keys(DAYS);
+
+  function pad(n) { return String(n).padStart(2, "0"); }
+  function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+  // 行程時間寫的是當地時間：日本 UTC+9，標 data-tz="tw" 的是台灣 UTC+8
+  function toTs(date, h, m, tz) {
+    var p = date.split("-");
+    return Date.UTC(+p[0], +p[1] - 1, +p[2], +h - (tz === "tw" ? 8 : 9), +m);
+  }
+  function label(li) {
+    var c = (li.querySelector("h4") || li.querySelector("p")).cloneNode(true);
+    c.querySelectorAll(".tag, .mode").forEach(function (x) { x.remove(); });
+    return c.textContent.trim();
+  }
+  function left(ms) {
+    var m = Math.max(0, Math.round(ms / 60000)), h = Math.floor(m / 60);
+    return h ? h + " 小時 " + (m % 60) + " 分" : m + " 分鐘";
+  }
+  function row(k, v) { return '<div class="row"><span class="k">' + k + '</span><span class="v">' + v + "</span></div>"; }
+
+  /* ---------- 現在、下一站 ---------- */
+  var days = IDS.map(function (id) {
+    var sec = document.getElementById(id);
+    var items = Array.prototype.slice.call(sec.querySelectorAll("ol.tl > li")).map(function (li) {
+      var m = li.querySelector("time").textContent.match(/(\d{1,2}):(\d{2})/);
+      return m ? { li: li, t: toTs(DAYS[id], m[1], m[2], li.dataset.tz) } : null;
+    }).filter(Boolean);
+    var live = document.createElement("div");
+    live.className = "live";
+    live.hidden = true;
+    sec.querySelector(".stayline").after(live);
+    return { sec: sec, items: items, live: live };
+  });
+
+  var countdown = document.createElement("p");
+  countdown.className = "countdown";
+  countdown.hidden = true;
+  document.querySelector("header.hero > p").after(countdown);
+
+  function tick() {
+    var now = Date.now();
+    var first = days[0].items[0].t;
+    countdown.hidden = now >= first;
+    if (now < first) countdown.innerHTML = "距離出發還有<b>" + Math.ceil((first - now) / 86400000) + "</b>天";
+
+    days.forEach(function (d) {
+      var its = d.items, cur = -1;
+      its.forEach(function (it, i) { if (it.t <= now) cur = i; });
+      // 當天第一項前 3 小時到最後一項後 4 小時才顯示
+      var active = now >= its[0].t - 3 * 3600e3 && now <= its[its.length - 1].t + 4 * 3600e3;
+      its.forEach(function (it, i) {
+        var isNow = active && i === cur;
+        it.li.classList.toggle("past", active && i < cur);
+        it.li.classList.toggle("now", isNow);
+        var tag = it.li.querySelector(".nowtag");
+        if (isNow && !tag) {
+          tag = document.createElement("span");
+          tag.className = "tag nowtag";
+          tag.textContent = "現在";
+          (it.li.querySelector("h4") || it.li.querySelector("p")).appendChild(tag);
+        } else if (!isNow && tag) {
+          tag.remove();
+        }
+      });
+      if (!active) { d.live.hidden = true; return; }
+      var next = its[cur + 1], html = "";
+      if (cur >= 0) html += row("現在", esc(label(its[cur].li)));
+      html += next
+        ? row("下一站", '<span class="mono">' + next.li.querySelector("time").textContent.trim() + "</span> " + esc(label(next.li)) + ' ・ <span class="cd">還有 ' + left(next.t - now) + "</span>")
+        : row("今天", "行程都走完了，辛苦了");
+      d.live.innerHTML = html;
+      d.live.hidden = false;
+    });
+  }
+  tick();
+  setInterval(tick, 30000);
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) tick(); });
+
+  /* ---------- 天氣預報（Open-Meteo，免金鑰） ---------- */
+  var LOC = {
+    kyoto: ["京都", 35.0116, 135.7681],
+    miyazu: ["天橋立", 35.5640, 135.1950],
+    nara: ["奈良", 34.6851, 135.8049],
+    osaka: ["大阪", 34.6937, 135.5023]
+  };
+  var DAYLOC = { d1: ["kyoto"], d2: ["kyoto"], d3: ["miyazu", "osaka"], d4: ["nara", "osaka"], d5: ["osaka"], d6: ["osaka"] };
+  var KEYS = Object.keys(LOC);
+  var CACHE = "wx-v1";
+
+  function wmo(c) {
+    if (c === 0) return "晴";
+    if (c === 1) return "大致晴";
+    if (c === 2) return "晴時多雲";
+    if (c === 3) return "陰";
+    if (c === 45 || c === 48) return "霧";
+    if (c >= 51 && c <= 57) return "毛毛雨";
+    if (c === 61 || c === 80) return "小雨";
+    if (c === 63 || c === 81) return "雨";
+    if (c === 65 || c === 82) return "大雨";
+    if (c === 66 || c === 67) return "凍雨";
+    if ((c >= 71 && c <= 77) || c === 85 || c === 86) return "雪";
+    if (c >= 95) return "雷雨";
+    return "—";
+  }
+  function stamp(ms) {
+    var d = new Date(ms);
+    return (d.getMonth() + 1) + "/" + d.getDate() + " " + pad(d.getHours()) + ":" + pad(d.getMinutes());
+  }
+
+  function render(data, at) {
+    var by = {};
+    KEYS.forEach(function (k, i) {
+      var dl = data[i] && data[i].daily;
+      by[k] = {};
+      if (!dl) return;
+      dl.time.forEach(function (day, j) {
+        by[k][day] = { c: dl.weather_code[j], hi: dl.temperature_2m_max[j], lo: dl.temperature_2m_min[j], p: dl.precipitation_probability_max[j] };
+      });
+    });
+
+    var cells = "";
+    IDS.forEach(function (id) {
+      var date = DAYS[id], sec = document.getElementById(id), wet = false;
+      var box = sec.querySelector(".wx");
+      if (!box) {
+        box = document.createElement("div");
+        box.className = "wx";
+        sec.querySelector(".live").after(box);
+      }
+      var parts = DAYLOC[id].map(function (k) {
+        var w = by[k][date];
+        if (!w) return "";
+        var isWet = w.p != null && w.p >= 50;
+        wet = wet || isWet;
+        return '<span class="w' + (isWet ? " wet" : "") + '"><b>' + LOC[k][0] + "</b><span>" + wmo(w.c) + '</span><span class="t">' +
+          Math.round(w.hi) + "° / " + Math.round(w.lo) + "°</span>" + (w.p != null ? '<span class="rain">降雨 ' + w.p + "%</span>" : "") + "</span>";
+      }).join("");
+      if (!parts) { box.hidden = true; return; }
+      var tip = wet ? "。降雨機率高，記得帶傘" + (id === "d2" ? "，嵐山可以改走雨天備案" : "") : "";
+      box.innerHTML = parts + '<span class="src">天氣預報：Open-Meteo，更新於 ' + stamp(at) + tip + "</span>";
+      box.hidden = false;
+
+      var main = by[DAYLOC[id][0]][date];
+      if (main) {
+        var cls = (document.querySelector('nav.days a[href="#' + id + '"]').className || "").replace("today", "").trim();
+        cells += '<a href="#' + id + '" class="' + cls + '"><span class="d">' + id.toUpperCase() + " " + (+date.slice(5, 7)) + "/" + (+date.slice(8)) +
+          '</span><span class="c">' + wmo(main.c) + '</span><span class="t">' + Math.round(main.hi) + "°/" + Math.round(main.lo) + "°</span>" +
+          (main.p != null ? '<span class="r">降雨 ' + main.p + "%</span>" : "") + "</a>";
+      }
+    });
+
+    var strip = document.querySelector(".wxstrip");
+    if (!cells) { if (strip) strip.hidden = true; return; }
+    if (!strip) {
+      strip = document.createElement("div");
+      strip.className = "wxstrip";
+      document.querySelector("#overview .fine").after(strip);
+    }
+    strip.innerHTML = "<h3>天氣預報</h3><div class=\"wxgrid\">" + cells + '</div><p class="fine">每天的主要城市，點一下看當天行程。更新於 ' + stamp(at) + "</p>";
+    strip.hidden = false;
+  }
+
+  try {
+    var cached = JSON.parse(localStorage.getItem(CACHE) || "null");
+    if (cached && cached.data) render(cached.data, cached.t);
+  } catch (e) {}
+
+  if (Date.now() < toTs(DAYS.d6, 23, 59)) {
+    var url = "https://api.open-meteo.com/v1/forecast?latitude=" + KEYS.map(function (k) { return LOC[k][1]; }).join(",") +
+      "&longitude=" + KEYS.map(function (k) { return LOC[k][2]; }).join(",") +
+      "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTokyo&forecast_days=16";
+    fetch(url).then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); }).then(function (json) {
+      var data = Array.isArray(json) ? json : [json];
+      var t = Date.now();
+      render(data, t);
+      try { localStorage.setItem(CACHE, JSON.stringify({ t: t, data: data })); } catch (e) {}
+    }).catch(function () {});
+  }
 })();
 </script>
 
